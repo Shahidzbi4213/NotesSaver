@@ -64,6 +64,13 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
+
+    //LifeCycle
+    def lifecycle_version = "2.6.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version"
+
+
     // Room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -82,5 +89,9 @@ dependencies {
     //Navigation's
     implementation 'io.github.raamcosta.compose-destinations:core:1.7.34-beta'
     ksp 'io.github.raamcosta.compose-destinations:ksp:1.7.34-beta'
+
+    
+    def nav_version = "2.5.3"
+    implementation "androidx.navigation:navigation-compose:$nav_version"
 
 }
