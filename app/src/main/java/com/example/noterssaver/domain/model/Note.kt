@@ -1,5 +1,6 @@
 package com.example.noterssaver.domain.model
 
+import androidx.compose.ui.graphics.Color
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.noterssaver.ui.theme.*
@@ -13,12 +14,15 @@ data class Note(
     val content: String,
     val timestamp: Long,
     val color: Int,
-    @PrimaryKey val id: Int? = null
+    @PrimaryKey val id: Int? = null,
 ) {
 
     companion object {
-        val noteColors = listOf(RedOrange, LightGreen, Violet, BabyBlue, RedPink)
+        val noteColors = listOf(
+            RedOrange, LightGreen, Violet, BabyBlue, RedPink, Purple40, Purple80,
+            Pink40, Pink80, Color.Cyan
+        )
     }
 }
 
-class InvalidNoteException(message:String) : Exception(message)
+class InvalidNoteException(message: String) : Exception(message)

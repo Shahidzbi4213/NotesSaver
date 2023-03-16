@@ -1,18 +1,16 @@
 package com.example.noterssaver.di
 
-import android.content.Context
 import androidx.room.Room
 import com.example.noterssaver.data.data_source.AppDatabase
-import com.example.noterssaver.data.data_source.NotesDao
 import com.example.noterssaver.data.repository.NotesRepoImpl
 import com.example.noterssaver.domain.repository.NotesRepo
 import com.example.noterssaver.domain.usecases.AddNote
 import com.example.noterssaver.domain.usecases.DeleteNote
 import com.example.noterssaver.domain.usecases.GetNotes
 import com.example.noterssaver.domain.usecases.NotesUseCases
-import com.example.noterssaver.presentation.viewmodels.NotesViewModel
+import com.example.noterssaver.presentation.add_note.AddNoteViewModel
+import com.example.noterssaver.presentation.show_notes.GetNotesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.annotation.KoinReflectAPI
 import org.koin.dsl.module
 
 
@@ -34,6 +32,7 @@ object Modules {
             )
         }
 
-        viewModel { NotesViewModel(get()) }
+        viewModel { AddNoteViewModel(get()) }
+        viewModel { GetNotesViewModel(get()) }
     }
 }

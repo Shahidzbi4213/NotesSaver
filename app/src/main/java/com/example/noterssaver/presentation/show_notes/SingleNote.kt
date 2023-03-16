@@ -24,34 +24,34 @@ import com.example.noterssaver.ui.theme.RedPink
 // Created by Shahid Iqbal on 3/15/2023.
 
 @Composable
-fun SingleNoteItem(onDelete: () -> Unit) {
+fun SingleNoteItem(note: Note) {
 
     Card(
-        modifier = Modifier.padding(5.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)
+        colors = CardDefaults.cardColors(containerColor = Color(note.color)),
     ) {
 
         Column(
             modifier = Modifier
                 .wrapContentHeight()
-                .fillMaxWidth()
-                .padding(10.dp),
-            verticalArrangement = Arrangement.Center
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+
+
         ) {
             Text(
-                text = "Save Password", style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    )
+                text = note.title, style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold
+                )
             )
             Spacer(modifier = Modifier.height(3.dp))
             Text(
-                text = "Go hands-on and learn the fundamentals of declarative UI, working with state, layouts, and theming. You'll see what composables and modifiers are, how to work with basic UI elements such as Row and Column, and how to give state to your app.",
+                text = note.content,
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Justify
             )
 
             IconButton(
-                onClick = onDelete, modifier = Modifier.align(Alignment.End)
+                onClick = {}, modifier = Modifier.align(Alignment.End)
 
             ) {
                 Icon(
@@ -66,7 +66,3 @@ fun SingleNoteItem(onDelete: () -> Unit) {
     }
 
 }
-
-@Preview
-@Composable
-fun ShowNoteItem() = SingleNoteItem() {}

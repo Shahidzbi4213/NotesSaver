@@ -9,13 +9,13 @@ import org.koin.core.context.startKoin
 
 // Created by Shahid Iqbal on 3/13/2023.
 
-class NotesApp : Application() {
+class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
         startKoin {
-            androidContext(this@NotesApp)
+            androidContext(this@MyApp)
             loadKoinModules(Modules.appModules)
         }
     }
