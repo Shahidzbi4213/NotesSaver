@@ -8,16 +8,15 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.noterssaver.R
+import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.presentation.destinations.AddNoteDestination
-import com.example.noterssaver.presentation.note_app.MainScaffold
+import com.example.noterssaver.util.Extensions.snackBar
 import com.example.noterssaver.util.NoteState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -41,17 +40,17 @@ fun ShowNotes(
         mutableStateOf(false)
     }
 
-    val notesList = viewModel.currentNotes.collectAsStateWithLifecycle().value
+    val notesList = viewModel.currentNotes.collectAsState().value
     val deleteState = viewModel.deleteState
+    val copiedState = viewModel.copyClick
 
     val snackBarState = remember { SnackbarHostState() }
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty))
 
 
-    MainScaffold(
-        floatingIcon = Icons.Default.Add, floatingButtonClick = {
-            isAddButtonClicked = true
-        }, snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
+    MainScaffold(floatingIcon = Icons.Default.Add, floatingButtonClick = {
+        isAddButtonClicked = true
+    }, snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
 
         if (notesList.isEmpty())
             LottieAnimation(
@@ -76,6 +75,7 @@ fun ShowNotes(
             }
         }
 
+        if (isAddButtonClicked) navigator.navigate(AddNoteDestination)
     }
 
     LaunchedEffect(key1 = deleteState, block = {
@@ -84,12 +84,21 @@ fun ShowNotes(
                 is NoteState.Error -> snackBarState.showSnackbar(
                     message = it.error.localizedMessage ?: "Something Went Wrong"
                 )
-                is NoteState.Success -> snackBarState.showSnackbar(message = it.success)
+                is NoteState.Success -> {
+                    snackBarState.showSnackbar(message = it.success)
+
+                }
             }
         }
 
     })
 
-    if (isAddButtonClicked) navigator.navigate(AddNoteDestination)
+    LaunchedEffect(key1 = copiedState, block = {
+        if (copiedState) {
+            snackBarState.snackBar("Copied to clipboard")
+            viewModel.onCopied(false)
+        }
+
+    })
 
 }

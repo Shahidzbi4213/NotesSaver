@@ -1,61 +1,122 @@
 package com.example.noterssaver.presentation.show_notes
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.noterssaver.R
 import com.example.noterssaver.domain.model.Note
 import org.koin.androidx.compose.koinViewModel
 
 
 // Created by Shahid Iqbal on 3/15/2023.
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SingleNoteItem(note: Note, viewModel: GetNotesViewModel = koinViewModel()) {
 
-    Card() {
+
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+
+    val clipboardManager = LocalClipboardManager.current
+
+
+    Card(onClick = {
+        isExpanded = !isExpanded
+    }) {
+
 
         Column(
             modifier = Modifier
                 .wrapContentHeight()
                 .fillMaxWidth()
-                .padding(10.dp),
+                .padding(10.dp)
+                .animateContentSize(
+                    animationSpec = tween(
+                        durationMillis = 250,
+                        easing = LinearOutSlowInEasing
+                    )
+                )
+
         ) {
             Text(
                 text = note.title, style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold
                 )
             )
+
+            Spacer(modifier = Modifier.height(2.dp))
+
             Text(
                 text = note.content,
                 style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.Justify
+                textAlign = TextAlign.Justify,
+                maxLines = if (isExpanded) Int.MAX_VALUE else 2,
+                overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(start = 1.dp)
             )
 
-            IconButton(
-                onClick = {
-                    viewModel.onDelete(note)
-                }, modifier = Modifier.align(Alignment.End)
 
+            Row(
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
             ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = null,
-                    modifier = Modifier.graphicsLayer(
-                        ambientShadowColor = Color.Black
+
+
+                IconButton(
+                    onClick = {
+                    }
+
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = null
                     )
-                )
+                }
+
+                IconButton(
+                    onClick = {
+                        clipboardManager.setText(
+                            AnnotatedString("${note.title} \n ${note.content}")
+                        )
+                        viewModel.onCopied(true)
+                    }
+
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_copy),
+                        contentDescription = null
+                    )
+                }
+
+
+
+                IconButton(
+                    onClick = {
+                        viewModel.onDelete(note)
+                    }
+
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null
+                    )
+                }
             }
         }
     }

@@ -12,8 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.noterssaver.presentation.MainViewModel
-import com.example.noterssaver.presentation.destinations.ShowNotesDestination
-import com.example.noterssaver.presentation.note_app.MainScaffold
+import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.util.Extensions.snackBar
 import com.example.noterssaver.util.NoteState
 import com.ramcosta.composedestinations.annotation.Destination
@@ -41,18 +40,31 @@ fun AddNote(
         mutableStateOf("")
     }
 
-    var isSaved by remember {
-        mutableStateOf(false)
-    }
+
 
     val snackBarState = remember { SnackbarHostState() }
     val currentNoteState = viewModel.addEditState
 
     mainViewModel.updateTitle("Add Note")
+    LaunchedEffect(key1 = currentNoteState, block = {
+        currentNoteState?.let {
+            when (it) {
+                is NoteState.Error -> {
+                    snackBarState.snackBar(it.error.message!!)
+                }
+                is NoteState.Success -> {
+                    snackBarState.snackBar(it.success)
+                    navigator.navigateUp()
+                }
+            }
+        }
+
+    })
 
     MainScaffold(floatingIcon = Icons.Default.Check, floatingButtonClick = {
         viewModel.onSavedClick(title, detail)
-    }, snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
+    },
+        snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -109,23 +121,4 @@ fun AddNote(
             )
         }
     }
-
-    LaunchedEffect(key1 = currentNoteState, block = {
-        currentNoteState?.let {
-            when (it) {
-                is NoteState.Error -> {
-                    snackBarState.snackBar(it.error.message!!)
-                }
-                is NoteState.Success -> {
-                    snackBarState.snackBar(it.success)
-                    isSaved = true
-                }
-            }
-        }
-
-    })
-
-
-    if (isSaved) navigator.navigate(ShowNotesDestination)
-
 }
