@@ -8,21 +8,12 @@ import com.example.noterssaver.ui.theme.*
 
 // Created by Shahid Iqbal on 3/13/2023.
 
-@Entity()
+@Entity
 data class Note(
     val title: String,
     val content: String,
     val timestamp: Long,
-    val color: Int,
     @PrimaryKey val id: Int? = null,
-) {
-
-    companion object {
-        val noteColors = listOf(
-            RedOrange, LightGreen, Violet, BabyBlue, RedPink, Purple40, Purple80,
-            Pink40, Pink80, Color.Cyan
-        )
-    }
-}
+)
 
 class InvalidNoteException(message: String) : Exception(message)

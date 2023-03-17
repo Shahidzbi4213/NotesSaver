@@ -5,19 +5,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.noterssaver.presentation.components.topAppBarColors
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.noterssaver.R
 import com.example.noterssaver.presentation.destinations.AddNoteDestination
 import com.example.noterssaver.presentation.note_app.MainScaffold
-import com.example.noterssaver.util.Extensions.debug
+import com.example.noterssaver.util.NoteState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -41,33 +42,54 @@ fun ShowNotes(
     }
 
     val notesList = viewModel.currentNotes.collectAsStateWithLifecycle().value
+    val deleteState = viewModel.deleteState
+
+    val snackBarState = remember { SnackbarHostState() }
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty))
+
 
     MainScaffold(
-        topBar = {
-            TopAppBar(title = { Text(text = "Notes Saver") }, colors = topAppBarColors())
-        },
-        floatingIcon = Icons.Default.Add,
-        floatingButtonClick = {
+        floatingIcon = Icons.Default.Add, floatingButtonClick = {
             isAddButtonClicked = true
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(paddingValues)
-        ) {
-            LazyColumn(
-                contentPadding = PaddingValues(5.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+        }, snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
+
+        if (notesList.isEmpty())
+            LottieAnimation(
+                composition,
+                modifier.padding(paddingValues),
+                iterations = LottieConstants.IterateForever
+            )
+        else {
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(paddingValues)
             ) {
-                items(items = notesList) {
-                    SingleNoteItem(note = it)
+                LazyColumn(
+                    contentPadding = PaddingValues(5.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(items = notesList) {
+                        SingleNoteItem(note = it)
+                    }
                 }
             }
         }
+
     }
 
-    if (isAddButtonClicked)
-        navigator.navigate(AddNoteDestination)
+    LaunchedEffect(key1 = deleteState, block = {
+        deleteState?.let {
+            when (it) {
+                is NoteState.Error -> snackBarState.showSnackbar(
+                    message = it.error.localizedMessage ?: "Something Went Wrong"
+                )
+                is NoteState.Success -> snackBarState.showSnackbar(message = it.success)
+            }
+        }
+
+    })
+
+    if (isAddButtonClicked) navigator.navigate(AddNoteDestination)
 
 }

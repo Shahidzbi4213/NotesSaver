@@ -1,49 +1,42 @@
 package com.example.noterssaver.presentation.show_notes
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.noterssaver.R
 import com.example.noterssaver.domain.model.Note
-import com.example.noterssaver.ui.theme.RedOrange
-import com.example.noterssaver.ui.theme.RedPink
+import org.koin.androidx.compose.koinViewModel
 
 
 // Created by Shahid Iqbal on 3/15/2023.
 
 @Composable
-fun SingleNoteItem(note: Note) {
+fun SingleNoteItem(note: Note, viewModel: GetNotesViewModel = koinViewModel()) {
 
-    Card(
-        colors = CardDefaults.cardColors(containerColor = Color(note.color)),
-    ) {
+    Card() {
 
         Column(
             modifier = Modifier
                 .wrapContentHeight()
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(5.dp),
-
-
+                .fillMaxWidth()
+                .padding(10.dp),
         ) {
             Text(
                 text = note.title, style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold
                 )
             )
-            Spacer(modifier = Modifier.height(3.dp))
             Text(
                 text = note.content,
                 style = MaterialTheme.typography.bodySmall,
@@ -51,7 +44,9 @@ fun SingleNoteItem(note: Note) {
             )
 
             IconButton(
-                onClick = {}, modifier = Modifier.align(Alignment.End)
+                onClick = {
+                    viewModel.onDelete(note)
+                }, modifier = Modifier.align(Alignment.End)
 
             ) {
                 Icon(

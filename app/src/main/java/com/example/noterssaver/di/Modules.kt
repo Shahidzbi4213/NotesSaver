@@ -8,6 +8,7 @@ import com.example.noterssaver.domain.usecases.AddNote
 import com.example.noterssaver.domain.usecases.DeleteNote
 import com.example.noterssaver.domain.usecases.GetNotes
 import com.example.noterssaver.domain.usecases.NotesUseCases
+import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.add_note.AddNoteViewModel
 import com.example.noterssaver.presentation.show_notes.GetNotesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -34,5 +35,6 @@ object Modules {
 
         viewModel { AddNoteViewModel(get()) }
         viewModel { GetNotesViewModel(get()) }
+        viewModel { MainViewModel() }
     }
 }
