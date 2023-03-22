@@ -63,6 +63,7 @@ fun AddNote(
 
     MainScaffold(floatingIcon = Icons.Default.Check, floatingButtonClick = {
         viewModel.onSavedClick(title, detail)
+
     },
         snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
         Column(
@@ -116,7 +117,8 @@ fun AddNote(
                 placeholder = { Text(text = "Write here what u want to save.") },
                 colors = TextFieldDefaults.textFieldColors(
                     focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
+                    unfocusedIndicatorColor = Color.Transparent,
+                    containerColor = Color.Transparent
                 )
             )
         }

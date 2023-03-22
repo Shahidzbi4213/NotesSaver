@@ -47,6 +47,27 @@ fun ShowNotes(
     val snackBarState = remember { SnackbarHostState() }
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty))
 
+    LaunchedEffect(key1 = copiedState, key2 = deleteState, block = {
+        if (copiedState) {
+            snackBarState.snackBar("Copied to clipboard")
+            viewModel.onCopied(false)
+        }
+
+        deleteState?.let {
+            when (it) {
+                is NoteState.Error -> snackBarState.showSnackbar(
+                    message = it.error.localizedMessage ?: "Something Went Wrong"
+                )
+                is NoteState.Success -> {
+                    snackBarState.showSnackbar(message = it.success)
+                    viewModel.updateDeleteState()
+
+                }
+            }
+        }
+
+    })
+
 
     MainScaffold(floatingIcon = Icons.Default.Add, floatingButtonClick = {
         isAddButtonClicked = true
@@ -78,27 +99,5 @@ fun ShowNotes(
         if (isAddButtonClicked) navigator.navigate(AddNoteDestination)
     }
 
-    LaunchedEffect(key1 = deleteState, block = {
-        deleteState?.let {
-            when (it) {
-                is NoteState.Error -> snackBarState.showSnackbar(
-                    message = it.error.localizedMessage ?: "Something Went Wrong"
-                )
-                is NoteState.Success -> {
-                    snackBarState.showSnackbar(message = it.success)
-
-                }
-            }
-        }
-
-    })
-
-    LaunchedEffect(key1 = copiedState, block = {
-        if (copiedState) {
-            snackBarState.snackBar("Copied to clipboard")
-            viewModel.onCopied(false)
-        }
-
-    })
 
 }

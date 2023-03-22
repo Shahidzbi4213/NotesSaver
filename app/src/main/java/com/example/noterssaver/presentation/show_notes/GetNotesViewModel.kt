@@ -32,6 +32,10 @@ class GetNotesViewModel(private val notesUseCases: NotesUseCases) : ViewModel() 
         copyClick = newState
     }
 
+    fun updateDeleteState(){
+        deleteState = null
+    }
+
     fun onDelete(note: Note) {
         viewModelScope.launch {
             deleteState = try {
@@ -40,7 +44,6 @@ class GetNotesViewModel(private val notesUseCases: NotesUseCases) : ViewModel() 
             } catch (e: Exception) {
                 NoteState.Error(e)
             }
-            deleteState = null
         }
     }
 }

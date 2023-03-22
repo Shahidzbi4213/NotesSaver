@@ -2,10 +2,14 @@ package com.example.noterssaver.presentation.components
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import com.example.noterssaver.presentation.MainViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -18,8 +22,10 @@ fun MainScaffold(
     floatingIcon: ImageVector,
     floatingButtonClick: () -> Unit,
     viewModel: MainViewModel = koinViewModel(),
-    content: @Composable (PaddingValues) -> Unit,
+    content: @Composable (PaddingValues) -> Unit
 ) {
+
+
     Scaffold(
         topBar = {
             TopAppBar(title = {
@@ -38,9 +44,10 @@ fun MainScaffold(
 @Composable
 fun FloatingButton(icon: ImageVector, onClick: () -> Unit) {
     FloatingActionButton(
-        onClick = { onClick.invoke() }
+        onClick = {
+            onClick.invoke()
+        }
     ) {
         Icon(imageVector = icon, contentDescription = null)
     }
 }
-
