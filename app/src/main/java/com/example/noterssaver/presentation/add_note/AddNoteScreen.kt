@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.noterssaver.domain.model.Note
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.util.Extensions.snackBar
@@ -30,16 +31,18 @@ fun AddNote(
     modifier: Modifier = Modifier,
     navigator: DestinationsNavigator,
     viewModel: AddNoteViewModel = koinViewModel(),
-    mainViewModel: MainViewModel = koinViewModel(),
+    mainViewModel: MainViewModel = koinViewModel()
 ) {
 
+    //Check for Editable Note
+    val note = mainViewModel.currentNote
+
     var title by remember {
-        mutableStateOf("")
+        mutableStateOf(note?.title ?: "")
     }
     var detail by remember {
-        mutableStateOf("")
+        mutableStateOf(note?.content ?: "")
     }
-
 
 
     val snackBarState = remember { SnackbarHostState() }
@@ -49,13 +52,9 @@ fun AddNote(
     LaunchedEffect(key1 = currentNoteState, block = {
         currentNoteState?.let {
             when (it) {
-                is NoteState.Error -> {
-                    snackBarState.snackBar(it.error.message!!)
-                }
-                is NoteState.Success -> {
-                    snackBarState.snackBar(it.success)
-                    navigator.navigateUp()
-                }
+                is NoteState.Error -> snackBarState.snackBar(it.error.message!!)
+                is NoteState.Success -> navigator.navigateUp()
+
             }
         }
 

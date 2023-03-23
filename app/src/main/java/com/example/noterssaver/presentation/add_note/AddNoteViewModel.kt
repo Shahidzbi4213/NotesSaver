@@ -1,11 +1,8 @@
 package com.example.noterssaver.presentation.add_note
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noterssaver.domain.model.InvalidNoteException
@@ -19,8 +16,9 @@ import kotlinx.coroutines.launch
 
 class AddNoteViewModel(private val notesUseCases: NotesUseCases) : ViewModel() {
 
-    private var _addEditState by mutableStateOf<NoteState?>(null)
-    val addEditState get() = _addEditState
+    var addEditState by mutableStateOf<NoteState?>(null)
+        private set
+
 
 
     fun onSavedClick(title: String, detail: String) {
@@ -31,7 +29,7 @@ class AddNoteViewModel(private val notesUseCases: NotesUseCases) : ViewModel() {
                 timestamp = System.currentTimeMillis()
             )
 
-            _addEditState = try {
+            addEditState = try {
                 notesUseCases.addNote.invoke(note)
                 NoteState.Success()
             } catch (e: InvalidNoteException) {
@@ -39,6 +37,7 @@ class AddNoteViewModel(private val notesUseCases: NotesUseCases) : ViewModel() {
             }
         }
     }
+
 
 
 }

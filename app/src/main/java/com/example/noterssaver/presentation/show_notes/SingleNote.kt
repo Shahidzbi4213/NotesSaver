@@ -19,14 +19,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.noterssaver.R
 import com.example.noterssaver.domain.model.Note
+import com.example.noterssaver.presentation.MainViewModel
+import com.example.noterssaver.util.Extensions.formattedDate
+import com.example.noterssaver.util.Extensions.formattedTime
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDateTime
 
 
 // Created by Shahid Iqbal on 3/15/2023.
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SingleNoteItem(note: Note, viewModel: GetNotesViewModel = koinViewModel()) {
+fun SingleNoteItem(
+    note: Note,
+    viewModel: GetNotesViewModel = koinViewModel(),
+    mainViewModel: MainViewModel = koinViewModel()
+) {
 
 
     var isExpanded by remember {
@@ -48,12 +56,34 @@ fun SingleNoteItem(note: Note, viewModel: GetNotesViewModel = koinViewModel()) {
                 .padding(10.dp)
                 .animateContentSize(
                     animationSpec = tween(
-                        durationMillis = 250,
-                        easing = LinearOutSlowInEasing
+                        durationMillis = 250, easing = LinearOutSlowInEasing
                     )
                 )
 
         ) {
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp)
+            ) {
+
+                Text(
+                    text = note.timestamp.formattedTime(),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.weight(1f)
+                )
+
+                Text(
+                    text = note.timestamp.formattedDate(),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Right
+                )
+
+
+            }
+
             Text(
                 text = note.title, style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold
@@ -68,8 +98,7 @@ fun SingleNoteItem(note: Note, viewModel: GetNotesViewModel = koinViewModel()) {
                 textAlign = TextAlign.Justify,
                 maxLines = if (isExpanded) Int.MAX_VALUE else 2,
                 overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .padding(start = 1.dp)
+                modifier = Modifier.padding(start = 1.dp)
             )
 
 
@@ -78,24 +107,21 @@ fun SingleNoteItem(note: Note, viewModel: GetNotesViewModel = koinViewModel()) {
             ) {
 
 
-                IconButton(
-                    onClick = {
-                    }
+                IconButton(onClick = {
+                }
 
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = null
+                        imageVector = Icons.Default.Edit, contentDescription = null
                     )
                 }
 
-                IconButton(
-                    onClick = {
-                        clipboardManager.setText(
-                            AnnotatedString("${note.title} \n ${note.content}")
-                        )
-                        viewModel.onCopied(true)
-                    }
+                IconButton(onClick = {
+                    clipboardManager.setText(
+                        AnnotatedString("${note.title} \n ${note.content}")
+                    )
+                    viewModel.onCopied(true)
+                }
 
                 ) {
                     Icon(
@@ -106,15 +132,13 @@ fun SingleNoteItem(note: Note, viewModel: GetNotesViewModel = koinViewModel()) {
 
 
 
-                IconButton(
-                    onClick = {
-                        viewModel.onDelete(note)
-                    }
+                IconButton(onClick = {
+                    viewModel.onDelete(note)
+                }
 
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = null
+                        imageVector = Icons.Default.Delete, contentDescription = null
                     )
                 }
             }

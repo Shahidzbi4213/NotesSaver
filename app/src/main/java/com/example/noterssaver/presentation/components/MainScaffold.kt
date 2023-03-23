@@ -42,7 +42,8 @@ fun MainScaffold(
 }
 
 @Composable
-fun FloatingButton(icon: ImageVector, onClick: () -> Unit) {
+fun FloatingButton(icon: ImageVector,
+                   onClick: () -> Unit) {
     FloatingActionButton(
         onClick = {
             onClick.invoke()

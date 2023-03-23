@@ -14,6 +14,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.noterssaver.R
+import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.presentation.destinations.AddNoteDestination
 import com.example.noterssaver.util.Extensions.snackBar
@@ -34,6 +35,7 @@ fun ShowNotes(
     modifier: Modifier = Modifier,
     navigator: DestinationsNavigator,
     viewModel: GetNotesViewModel = koinViewModel(),
+    mainViewModel: MainViewModel = koinViewModel()
 ) {
 
     var isAddButtonClicked by remember {
@@ -47,7 +49,7 @@ fun ShowNotes(
     val snackBarState = remember { SnackbarHostState() }
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty))
 
-    LaunchedEffect(key1 = copiedState, key2 = deleteState, block = {
+    LaunchedEffect(key1 = copiedState, key2 = deleteState ,block = {
         if (copiedState) {
             snackBarState.snackBar("Copied to clipboard")
             viewModel.onCopied(false)

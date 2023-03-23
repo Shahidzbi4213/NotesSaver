@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface NotesRepo {
 
-
     fun getNotes(): Flow<List<Note>>
 
     suspend fun insertNotes(note: Note)
