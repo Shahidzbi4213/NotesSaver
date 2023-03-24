@@ -1,15 +1,15 @@
 package com.example.noterssaver.presentation.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import com.example.noterssaver.presentation.MainViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.example.noterssaver.util.Extensions.debug
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -25,6 +25,8 @@ fun MainScaffold(
     content: @Composable (PaddingValues) -> Unit
 ) {
 
+    val isScrollUp = viewModel.isScrollUp
+
 
     Scaffold(
         topBar = {
@@ -36,14 +38,19 @@ fun MainScaffold(
             })
         },
         snackbarHost = snackBarHost,
-        floatingActionButton = { FloatingButton(icon = floatingIcon) { floatingButtonClick.invoke() } },
-        content = content,
+        floatingActionButton = {
+           if (isScrollUp)  FloatingButton(icon = floatingIcon) { floatingButtonClick.invoke() }
+        },
+        content = content
     )
 }
 
 @Composable
-fun FloatingButton(icon: ImageVector,
-                   onClick: () -> Unit) {
+fun FloatingButton(
+    icon: ImageVector,
+    onClick: () -> Unit
+) {
+
     FloatingActionButton(
         onClick = {
             onClick.invoke()
@@ -51,4 +58,6 @@ fun FloatingButton(icon: ImageVector,
     ) {
         Icon(imageVector = icon, contentDescription = null)
     }
+
+
 }

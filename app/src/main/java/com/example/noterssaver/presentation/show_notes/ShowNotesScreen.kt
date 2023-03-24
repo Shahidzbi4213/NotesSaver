@@ -2,7 +2,9 @@ package com.example.noterssaver.presentation.show_notes
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
@@ -17,11 +19,13 @@ import com.example.noterssaver.R
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.presentation.destinations.AddNoteDestination
+import com.example.noterssaver.util.Extensions.debug
 import com.example.noterssaver.util.Extensions.snackBar
 import com.example.noterssaver.util.NoteState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -42,6 +46,8 @@ fun ShowNotes(
         mutableStateOf(false)
     }
 
+
+
     val notesList = viewModel.currentNotes.collectAsState().value
     val deleteState = viewModel.deleteState
     val copiedState = viewModel.copyClick
@@ -49,7 +55,18 @@ fun ShowNotes(
     val snackBarState = remember { SnackbarHostState() }
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty))
 
-    LaunchedEffect(key1 = copiedState, key2 = deleteState ,block = {
+    val lazyListState = rememberLazyListState()
+
+    LaunchedEffect(key1 = Unit, block = {
+        snapshotFlow { lazyListState.firstVisibleItemIndex }
+            .collectLatest { index ->
+                mainViewModel.updateScrollSate(index == 0)
+            }
+    })
+
+
+
+    LaunchedEffect(key1 = copiedState, key2 = deleteState, block = {
         if (copiedState) {
             snackBarState.snackBar("Copied to clipboard")
             viewModel.onCopied(false)
@@ -75,12 +92,12 @@ fun ShowNotes(
         isAddButtonClicked = true
     }, snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
 
-        if (notesList.isEmpty())
-            LottieAnimation(
-                composition,
-                modifier.padding(paddingValues),
-                iterations = LottieConstants.IterateForever
-            )
+
+        if (notesList.isEmpty()) LottieAnimation(
+            composition,
+            modifier.padding(paddingValues),
+            iterations = LottieConstants.IterateForever
+        )
         else {
             Column(
                 modifier = modifier
@@ -89,7 +106,8 @@ fun ShowNotes(
             ) {
                 LazyColumn(
                     contentPadding = PaddingValues(5.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    state = lazyListState,
                 ) {
                     items(items = notesList) {
                         SingleNoteItem(note = it)
@@ -99,7 +117,26 @@ fun ShowNotes(
         }
 
         if (isAddButtonClicked) navigator.navigate(AddNoteDestination)
+
     }
 
 
+}
+
+@Composable
+private fun LazyListState.isScrollingUp(): Boolean {
+    var previousIndex by remember(this) { mutableStateOf(firstVisibleItemIndex) }
+    var previousScrollOffset by remember(this) { mutableStateOf(firstVisibleItemScrollOffset) }
+    return remember(this) {
+        derivedStateOf {
+            if (previousIndex != firstVisibleItemIndex) {
+                previousIndex > firstVisibleItemIndex
+            } else {
+                previousScrollOffset >= firstVisibleItemScrollOffset
+            }.also {
+                previousIndex = firstVisibleItemIndex
+                previousScrollOffset = firstVisibleItemScrollOffset
+            }
+        }
+    }.value
 }

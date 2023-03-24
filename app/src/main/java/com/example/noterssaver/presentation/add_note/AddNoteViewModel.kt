@@ -19,13 +19,27 @@ class AddNoteViewModel(private val notesUseCases: NotesUseCases) : ViewModel() {
     var addEditState by mutableStateOf<NoteState?>(null)
         private set
 
+    var title by mutableStateOf("")
+        private set
+
+    var content by mutableStateOf("")
+        private set
 
 
-    fun onSavedClick(title: String, detail: String) {
+    fun onTitleChange(newTitle: String) {
+        title = newTitle
+    }
+
+    fun onContentChange(newContent: String) {
+        content = newContent
+    }
+
+
+    fun saveNote() {
         viewModelScope.launch {
             val note = Note(
                 title = title,
-                content = detail,
+                content = content,
                 timestamp = System.currentTimeMillis()
             )
 
@@ -37,7 +51,6 @@ class AddNoteViewModel(private val notesUseCases: NotesUseCases) : ViewModel() {
             }
         }
     }
-
 
 
 }

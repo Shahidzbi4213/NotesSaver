@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.noterssaver.domain.model.Note
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.util.Extensions.snackBar
@@ -34,19 +33,12 @@ fun AddNote(
     mainViewModel: MainViewModel = koinViewModel()
 ) {
 
-    //Check for Editable Note
-    val note = mainViewModel.currentNote
-
-    var title by remember {
-        mutableStateOf(note?.title ?: "")
-    }
-    var detail by remember {
-        mutableStateOf(note?.content ?: "")
-    }
-
 
     val snackBarState = remember { SnackbarHostState() }
     val currentNoteState = viewModel.addEditState
+
+    val title = viewModel.title
+    val content = viewModel.content
 
     mainViewModel.updateTitle("Add Note")
     LaunchedEffect(key1 = currentNoteState, block = {
@@ -61,7 +53,7 @@ fun AddNote(
     })
 
     MainScaffold(floatingIcon = Icons.Default.Check, floatingButtonClick = {
-        viewModel.onSavedClick(title, detail)
+        viewModel.saveNote()
 
     },
         snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
@@ -83,7 +75,7 @@ fun AddNote(
             Spacer(modifier = Modifier.height(3.dp))
             TextField(
                 value = title,
-                onValueChange = { title = it },
+                onValueChange = { viewModel.onTitleChange(it) },
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = MaterialTheme.typography.titleMedium,
                 singleLine = true,
@@ -107,8 +99,8 @@ fun AddNote(
             )
             Spacer(modifier = Modifier.height(3.dp))
             TextField(
-                value = detail,
-                onValueChange = { detail = it },
+                value = content,
+                onValueChange = { viewModel.onContentChange(it) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()

@@ -11,11 +11,18 @@ import com.example.noterssaver.domain.model.Note
 
 class MainViewModel : ViewModel() {
 
+    var isScrollUp: Boolean by mutableStateOf(true)
+        private set
+
     var topBarTitle by mutableStateOf("Notes Saver")
         private set
 
     fun updateTitle(newTitle: String) {
         topBarTitle = newTitle
+    }
+
+    fun updateScrollSate(newScrollState:Boolean){
+        isScrollUp = newScrollState
     }
 
 }
