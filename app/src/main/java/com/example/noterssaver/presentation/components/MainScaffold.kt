@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import com.example.noterssaver.presentation.MainViewModel
@@ -30,16 +31,18 @@ fun MainScaffold(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = {
-                Text(
-                    text = viewModel.topBarTitle,
-                    fontWeight = FontWeight.Bold
-                )
-            })
+            TopAppBar(
+                title = {
+                    Text(
+                        text = viewModel.topBarTitle,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            )
         },
         snackbarHost = snackBarHost,
         floatingActionButton = {
-           if (isScrollUp)  FloatingButton(icon = floatingIcon) { floatingButtonClick.invoke() }
+            if (isScrollUp) FloatingButton(icon = floatingIcon) { floatingButtonClick.invoke() }
         },
         content = content
     )

@@ -10,7 +10,11 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -19,11 +23,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.noterssaver.R
 import com.example.noterssaver.domain.model.Note
-import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.util.Extensions.formattedDate
 import com.example.noterssaver.util.Extensions.formattedTime
 import org.koin.androidx.compose.koinViewModel
-import java.time.LocalDateTime
 
 
 // Created by Shahid Iqbal on 3/15/2023.
@@ -32,8 +34,8 @@ import java.time.LocalDateTime
 @Composable
 fun SingleNoteItem(
     note: Note,
-    viewModel: GetNotesViewModel = koinViewModel(),
-    mainViewModel: MainViewModel = koinViewModel()
+    onEdit: () -> Unit,
+    viewModel: GetNotesViewModel = koinViewModel()
 ) {
 
 
@@ -42,10 +44,13 @@ fun SingleNoteItem(
     }
 
     val clipboardManager = LocalClipboardManager.current
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
 
     Card(onClick = {
         isExpanded = !isExpanded
+        focusManager.clearFocus()
     }) {
 
 
@@ -58,7 +63,7 @@ fun SingleNoteItem(
                     animationSpec = tween(
                         durationMillis = 250, easing = LinearOutSlowInEasing
                     )
-                )
+                ).focusRequester(focusRequester)
 
         ) {
 
@@ -95,7 +100,6 @@ fun SingleNoteItem(
             Text(
                 text = note.content,
                 style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.Justify,
                 maxLines = if (isExpanded) Int.MAX_VALUE else 2,
                 overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
                 modifier = Modifier.padding(start = 1.dp)
@@ -108,7 +112,7 @@ fun SingleNoteItem(
 
 
                 IconButton(onClick = {
-
+                    onEdit.invoke()
                 }
 
                 ) {

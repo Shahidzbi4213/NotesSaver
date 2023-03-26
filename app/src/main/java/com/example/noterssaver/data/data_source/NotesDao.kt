@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 interface NotesDao {
 
 
-    @Query("Select * from note")
+    @Query("Select * from note order by timestamp")
     fun getNotes(): Flow<List<Note>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun insertNote(note: Note)
 
     @Query("Select * from note where id = :id")

@@ -11,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.noterssaver.domain.model.Note
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
+import com.example.noterssaver.util.Extensions.debug
 import com.example.noterssaver.util.Extensions.snackBar
 import com.example.noterssaver.util.NoteState
 import com.ramcosta.composedestinations.annotation.Destination
@@ -27,21 +29,23 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 @Destination
 fun AddNote(
-    modifier: Modifier = Modifier,
+    note: Note?,
     navigator: DestinationsNavigator,
     viewModel: AddNoteViewModel = koinViewModel(),
     mainViewModel: MainViewModel = koinViewModel()
 ) {
 
-
     val snackBarState = remember { SnackbarHostState() }
     val currentNoteState = viewModel.addEditState
+
 
     val title = viewModel.title
     val content = viewModel.content
 
+
+
     mainViewModel.updateTitle("Add Note")
-    LaunchedEffect(key1 = currentNoteState, block = {
+    LaunchedEffect(key1 = currentNoteState, key2 = note, block = {
         currentNoteState?.let {
             when (it) {
                 is NoteState.Error -> snackBarState.snackBar(it.error.message!!)
@@ -50,15 +54,21 @@ fun AddNote(
             }
         }
 
+        note?.let {
+            with(viewModel){
+                updateCurrentEditableNote(it)
+                onTitleChange(it.title)
+                onContentChange(it.content)
+            }
+        }
     })
 
     MainScaffold(floatingIcon = Icons.Default.Check, floatingButtonClick = {
         viewModel.saveNote()
 
-    },
-        snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
+    }, snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(paddingValues)

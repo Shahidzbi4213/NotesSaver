@@ -33,8 +33,8 @@ object Modules {
             )
         }
 
+        viewModel { MainViewModel() }
         viewModel { AddNoteViewModel(get()) }
         viewModel { GetNotesViewModel(get()) }
-        viewModel { MainViewModel() }
     }
 }

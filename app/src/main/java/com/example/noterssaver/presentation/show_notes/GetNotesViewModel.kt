@@ -8,7 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.noterssaver.domain.model.Note
 import com.example.noterssaver.domain.usecases.NotesUseCases
 import com.example.noterssaver.util.NoteState
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -17,22 +19,29 @@ import kotlinx.coroutines.launch
 
 class GetNotesViewModel(private val notesUseCases: NotesUseCases) : ViewModel() {
 
-    val currentNotes = notesUseCases.getNotes.invoke().stateIn(
-        viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000), emptyList()
-    )
 
     var deleteState by mutableStateOf<NoteState?>(null)
         private set
 
-    var copyClick by mutableStateOf<Boolean>(false)
+    var copyClick by mutableStateOf(false)
         private set
+
+    var searchText = MutableStateFlow("")
+        private set
+
+    val currentNotes = notesUseCases.getNotes.invoke(searchFlow = searchText).stateIn(
+        viewModelScope, started = SharingStarted.WhileSubscribed(5000), emptyList()
+    )
+
+    fun onSearchTextChange(text: String) {
+        searchText.value = text
+    }
 
     fun onCopied(newState: Boolean) {
         copyClick = newState
     }
 
-    fun updateDeleteState(){
+    fun updateDeleteState() {
         deleteState = null
     }
 
