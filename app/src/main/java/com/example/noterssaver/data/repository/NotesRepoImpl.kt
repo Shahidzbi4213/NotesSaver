@@ -26,4 +26,8 @@ class NotesRepoImpl(private val dao: NotesDao) : NotesRepo {
         return dao.getNotesById(id)
     }
 
+    override suspend fun deleteOldNotes() {
+        dao.deleteOldNotes()
+    }
+
 }
