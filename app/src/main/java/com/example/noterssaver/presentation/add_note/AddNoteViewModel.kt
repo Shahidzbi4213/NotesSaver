@@ -7,9 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noterssaver.domain.model.InvalidNoteException
 import com.example.noterssaver.domain.model.Note
-import com.example.noterssaver.domain.usecases.NotesUseCases
-import com.example.noterssaver.presentation.MainViewModel
-import com.example.noterssaver.util.Extensions.debug
+import com.example.noterssaver.domain.usecases.notes.NotesUseCases
 import com.example.noterssaver.util.NoteState
 import kotlinx.coroutines.launch
 

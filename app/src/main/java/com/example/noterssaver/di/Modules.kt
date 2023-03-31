@@ -1,13 +1,13 @@
 package com.example.noterssaver.di
 
 import androidx.room.Room
-import androidx.work.PeriodicWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
 import com.example.noterssaver.data.data_source.AppDatabase
 import com.example.noterssaver.data.repository.NotesRepoImpl
+import com.example.noterssaver.data.repository.SettingRepoImpl
 import com.example.noterssaver.data.worker.DeleteNotesWorker
 import com.example.noterssaver.domain.repository.NotesRepo
-import com.example.noterssaver.domain.usecases.*
+import com.example.noterssaver.domain.repository.SettingRepo
+import com.example.noterssaver.domain.usecases.notes.*
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.add_note.AddNoteViewModel
 import com.example.noterssaver.presentation.show_notes.GetNotesViewModel
@@ -26,7 +26,11 @@ object Modules {
         }
 
         single { get<AppDatabase>().notesDao() }
+        single { get<AppDatabase>().settingDao() }
+
         single<NotesRepo> { NotesRepoImpl(get()) }
+        single<SettingRepo> { SettingRepoImpl(get()) }
+
 
         single {
             NotesUseCases(

@@ -24,6 +24,12 @@ interface NotesDao {
     suspend fun deleteNote(note: Note)
 
     /**
+     * Delete All Notes Saved By User
+     * */
+    @Query("DELETE FROM note")
+    fun deleteAllNotes()
+
+    /**
      * Deletes all notes from the database that are older than 1 month old.
      *
      * This method executes a SQL query that deletes all rows from the "notes" table
@@ -33,5 +39,6 @@ interface NotesDao {
      */
     @Query("DELETE  FROM note WHERE timestamp < strftime('%s', 'now', '-1 month') * 1000")
     suspend fun deleteOldNotes()
+
 
 }

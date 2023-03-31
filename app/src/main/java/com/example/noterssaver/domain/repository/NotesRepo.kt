@@ -16,5 +16,6 @@ interface NotesRepo {
 
     suspend fun getNoteById(id: Int): Note?
    suspend fun deleteOldNotes()
+    suspend fun deleteAllNotes()
 
 }

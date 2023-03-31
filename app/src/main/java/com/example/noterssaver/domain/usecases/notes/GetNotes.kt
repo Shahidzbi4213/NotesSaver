@@ -1,4 +1,4 @@
-package com.example.noterssaver.domain.usecases
+package com.example.noterssaver.domain.usecases.notes
 
 import com.example.noterssaver.domain.utils.OrderType
 import com.example.noterssaver.domain.model.Note

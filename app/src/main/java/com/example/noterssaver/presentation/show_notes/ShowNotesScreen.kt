@@ -24,6 +24,7 @@ import com.example.noterssaver.R
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.presentation.destinations.AddNoteDestination
+import com.example.noterssaver.presentation.destinations.SettingScreenDestination
 import com.example.noterssaver.util.Extensions.snackBar
 import com.example.noterssaver.util.NoteState
 import com.ramcosta.composedestinations.annotation.Destination
@@ -62,6 +63,9 @@ fun ShowNotes(
 
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
+    var isSettingClicked by remember {
+        mutableStateOf(false)
+    }
 
 
     LaunchedEffect(key1 = copiedState, key2 = deleteState, key3 = null, block = {
@@ -92,7 +96,9 @@ fun ShowNotes(
 
     MainScaffold(floatingIcon = Icons.Default.Add, floatingButtonClick = {
         isAddButtonClicked = true
-    }, snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
+    }, snackBarHost = { SnackbarHost(hostState = snackBarState) }, onSettingClick = {
+        isSettingClicked = true
+    }) { paddingValues ->
 
 
         if (notesList.isEmpty()) LottieAnimation(
@@ -101,14 +107,12 @@ fun ShowNotes(
             iterations = LottieConstants.IterateForever
         )
         else {
-            Column(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues)
-                    .clickable {
-                        focusManager.clearFocus()
-                    }
-            ) {
+            Column(modifier = modifier
+                .fillMaxWidth()
+                .padding(paddingValues)
+                .clickable {
+                    focusManager.clearFocus()
+                }) {
 
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -148,6 +152,7 @@ fun ShowNotes(
         }
 
         if (isAddButtonClicked) navigator.navigate(AddNoteDestination(null))
+        if (isSettingClicked) navigator.navigate(SettingScreenDestination)
 
     }
 
