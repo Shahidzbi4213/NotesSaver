@@ -1,35 +1,37 @@
 package com.example.noterssaver.data.data_source
 
-import androidx.room.Dao
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
+import com.example.noterssaver.domain.model.Setting
+import com.example.noterssaver.presentation.setting.ThemeStyle
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SettingDao {
 
-    @Query("SELECT password FROM setting")
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertEmpty(setting: Setting = Setting())
+
+    @Query("SELECT currentPassword FROM setting")
     fun getCurrentPassword(): Flow<String>
 
     @Query("SELECT hint FROM setting")
     fun getCurrentHint(): Flow<String>
 
-    @Query("SELECT isDarkMode FROM setting")
-    fun getCurrentMode(): Flow<Boolean>
+    @Query("SELECT currentTheme FROM setting")
+    fun getCurrentTheme(): Flow<ThemeStyle>
 
     @Query("SELECT isAppLock FROM setting")
     fun getAppLockStatus(): Flow<Boolean>
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateDarkMode(value: Boolean)
+    @Query("UPDATE setting set currentTheme = :value")
+    suspend fun updateCurrentTheme(value: ThemeStyle)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Query("UPDATE setting set isAppLock = :value")
     suspend fun updateAppLockStatus(value: Boolean)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Query("UPDATE setting set currentPassword = :newPass")
     suspend fun updatePassword(newPass: String)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Query("UPDATE setting set hint = :newHint")
     suspend fun updateHint(newHint: String)
 }

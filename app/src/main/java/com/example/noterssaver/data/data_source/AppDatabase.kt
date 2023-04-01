@@ -14,6 +14,7 @@ import com.example.noterssaver.domain.model.Setting
     version = 1,
     exportSchema = false
 )
+@TypeConverters(ThemeStyleConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun notesDao(): NotesDao

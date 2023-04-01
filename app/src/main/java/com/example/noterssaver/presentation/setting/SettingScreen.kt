@@ -1,16 +1,18 @@
 package com.example.noterssaver.presentation.setting
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.noterssaver.domain.utils.OrderType
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
 /*
@@ -19,7 +21,15 @@ import org.koin.androidx.compose.koinViewModel
 
 @Destination
 @Composable
-fun SettingScreen(modifier: Modifier = Modifier, viewModel: MainViewModel = koinViewModel()) {
+fun SettingScreen(
+    navigator: DestinationsNavigator,
+    modifier: Modifier = Modifier,
+    viewModel: MainViewModel = koinViewModel()
+) {
+
+    var menuClick by remember {
+        mutableStateOf("")
+    }
 
     viewModel.updateTitle("Settings")
 
@@ -28,87 +38,67 @@ fun SettingScreen(modifier: Modifier = Modifier, viewModel: MainViewModel = koin
             modifier = modifier
                 .fillMaxSize()
                 .padding(it)
-                .padding(start = 5.dp, end = 5.dp, top = 10.dp)
+                .padding(top = 10.dp, start = 20.dp)
         ) {
-            DarModeCard()
-            Spacer(modifier = Modifier.height(15.dp))
-            AppLockCard()
-            Spacer(modifier = Modifier.height(15.dp))
-            ClearAllNotesCard()
-        }
-
-    }
-
-}
-
-@Composable
-fun DarModeCard() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-    ) {
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 10.dp, end = 10.dp)
-        ) {
-            Text(
-                text = "Dark Theme",
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                modifier = Modifier.weight(1f)
-            )
-
-            Switch(checked = true, onCheckedChange = {})
-        }
-    }
-}
-
-@Composable
-fun AppLockCard() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-    ) {
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 10.dp, end = 10.dp)
-        ) {
-            Text(
-                text = "App Lock",
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                modifier = Modifier.weight(1f)
-            )
-
-            Switch(checked = true, onCheckedChange = {})
-        }
-    }
-}
-
-@Composable
-fun ClearAllNotesCard() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-    ) {
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 10.dp, end = 10.dp)
-        ) {
-            Text(
-                text = "Clear All Notes",
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                modifier = Modifier.weight(1f)
-            )
-
-            TextButton(onClick = { /*TODO*/ }) {
-                Text(text = "Clear")
+            SettingOption(
+                title = "Theme",
+                subtitle = ThemeStyle.LIGHT.toString(),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                menuClick = "Theme"
             }
+
+            SettingOption(
+                title = "Fingerprint Lock",
+                subtitle = "Disabled",
+                modifier = Modifier.fillMaxWidth()
+            ) {}
+            SettingOption(
+                title = "Sorted By",
+                subtitle = OrderType.ASCENDING.toString(),
+                modifier = Modifier.fillMaxWidth()
+            ) {}
+
+            SettingOption(
+                title = "Clear All",
+                subtitle = "Please be advised that all notes will be deleted. This action cannot be undone.",
+                modifier = Modifier.fillMaxWidth()
+            ) {}
+        }
+    }
+
+}
+
+
+@Composable
+fun SettingOption(
+    title: String,
+    subtitle: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = modifier
+            .clickable { onClick.invoke() }
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.labelLarge
+            )
+            Spacer(modifier = Modifier.height(3.dp))
+            Text(
+                text = subtitle,
+                modifier = Modifier.padding(start = 2.dp),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            )
         }
     }
 }
+
+
+
 

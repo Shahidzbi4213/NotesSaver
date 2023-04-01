@@ -1,7 +1,10 @@
 package com.example.noterssaver.domain.model
 
+import android.content.res.Resources.Theme
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.noterssaver.presentation.setting.ThemeStyle
 
 /*
  * Created by Shahid Iqbal on 3/31/2023.
@@ -9,7 +12,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Setting(
-    val isDarkMode: Boolean = false,
+    val currentTheme: ThemeStyle = ThemeStyle.AUTO,
     val isAppLock: Boolean = false,
     val currentPassword: String? = null,
     val hint: String? = null,
