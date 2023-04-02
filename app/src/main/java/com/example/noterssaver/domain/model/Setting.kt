@@ -12,7 +12,7 @@ import com.example.noterssaver.presentation.setting.ThemeStyle
 
 @Entity
 data class Setting(
-    val currentTheme: ThemeStyle = ThemeStyle.AUTO,
+    val currentTheme: ThemeStyle = ThemeStyle.LIGHT,
     val isAppLock: Boolean = false,
     val currentPassword: String? = null,
     val hint: String? = null,

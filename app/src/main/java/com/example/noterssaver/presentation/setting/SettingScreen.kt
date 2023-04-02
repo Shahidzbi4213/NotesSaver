@@ -1,16 +1,15 @@
 package com.example.noterssaver.presentation.setting
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.noterssaver.domain.utils.OrderType
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
+import com.example.noterssaver.presentation.destinations.ThemeScreenDestination
+import com.example.noterssaver.presentation.setting.component.SettingOption
+import com.example.noterssaver.util.Extensions.debug
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
@@ -24,7 +23,8 @@ import org.koin.androidx.compose.koinViewModel
 fun SettingScreen(
     navigator: DestinationsNavigator,
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel = koinViewModel()
+    viewModel: MainViewModel = koinViewModel(),
+    settingViewModel: SettingViewModel = koinViewModel()
 ) {
 
     var menuClick by remember {
@@ -33,6 +33,8 @@ fun SettingScreen(
 
     viewModel.updateTitle("Settings")
 
+    val currentTheme by settingViewModel.currentTheme.collectAsState(initial = ThemeStyle.LIGHT)
+
     MainScaffold {
         Column(
             modifier = modifier
@@ -40,24 +42,30 @@ fun SettingScreen(
                 .padding(it)
                 .padding(top = 10.dp, start = 20.dp)
         ) {
+
             SettingOption(
                 title = "Theme",
-                subtitle = ThemeStyle.LIGHT.toString(),
+                subtitle = currentTheme.name,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 menuClick = "Theme"
             }
+
+            Spacer(modifier = Modifier.height(10.dp))
 
             SettingOption(
                 title = "Fingerprint Lock",
                 subtitle = "Disabled",
                 modifier = Modifier.fillMaxWidth()
             ) {}
+            Spacer(modifier = Modifier.height(10.dp))
+
             SettingOption(
                 title = "Sorted By",
                 subtitle = OrderType.ASCENDING.toString(),
                 modifier = Modifier.fillMaxWidth()
             ) {}
+            Spacer(modifier = Modifier.height(10.dp))
 
             SettingOption(
                 title = "Clear All",
@@ -67,37 +75,15 @@ fun SettingScreen(
         }
     }
 
-}
+    when (menuClick) {
+        "Theme" -> {
+            navigator.navigate(ThemeScreenDestination)
 
-
-@Composable
-fun SettingOption(
-    title: String,
-    subtitle: String,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = modifier
-            .clickable { onClick.invoke() }
-            .padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.labelLarge
-            )
-            Spacer(modifier = Modifier.height(3.dp))
-            Text(
-                text = subtitle,
-                modifier = Modifier.padding(start = 2.dp),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-            )
         }
+
     }
 }
+
 
 
 
