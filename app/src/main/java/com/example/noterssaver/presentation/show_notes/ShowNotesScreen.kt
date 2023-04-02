@@ -7,13 +7,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
@@ -22,6 +19,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.noterssaver.R
 import com.example.noterssaver.presentation.MainViewModel
+import com.example.noterssaver.presentation.add_note.AddNoteViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.presentation.destinations.AddNoteDestination
 import com.example.noterssaver.presentation.destinations.SettingScreenDestination
@@ -44,28 +42,25 @@ fun ShowNotes(
     modifier: Modifier = Modifier,
     navigator: DestinationsNavigator,
     viewModel: GetNotesViewModel = koinViewModel(),
-    mainViewModel: MainViewModel = koinViewModel()
+    addNoteViewModel: AddNoteViewModel = koinViewModel(),
+    mainViewModel: MainViewModel = koinViewModel(),
 ) {
 
-    var isAddButtonClicked by remember {
-        mutableStateOf(false)
-    }
-    val notesList by viewModel.currentNotes.collectAsState()
-    val searchText by viewModel.searchText.collectAsState()
 
+    val notesList by viewModel.currentNotes.collectAsState()
+    val searchText by viewModel.searchText.collectAsState(initial = "")
+    val lastDeletedNotes by viewModel.lastDeleteNote.collectAsState(initial = null)
     val deleteState = viewModel.deleteState
     val copiedState = viewModel.copyClick
 
 
     val snackBarState = remember { SnackbarHostState() }
     val lazyListState = rememberLazyListState()
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty))
-
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-    var isSettingClicked by remember {
-        mutableStateOf(false)
-    }
+
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty))
+
 
 
     LaunchedEffect(key1 = copiedState, key2 = deleteState, key3 = null, block = {
@@ -80,7 +75,12 @@ fun ShowNotes(
                     message = it.error.localizedMessage ?: "Something Went Wrong"
                 )
                 is NoteState.Success -> {
-                    snackBarState.showSnackbar(message = it.success)
+                    snackBarState.showSnackbar(message = it.success, actionLabel = "Undo").apply {
+                        if (this == SnackbarResult.ActionPerformed) addNoteViewModel.saveNote(
+                            lastDeletedNotes
+                        )
+
+                    }
                     viewModel.updateDeleteState()
 
                 }
@@ -94,11 +94,11 @@ fun ShowNotes(
     })
 
 
-    MainScaffold(floatingIcon = Icons.Default.Add, floatingButtonClick = {
-        isAddButtonClicked = true
-    }, snackBarHost = { SnackbarHost(hostState = snackBarState) }, onSettingClick = {
-        isSettingClicked = true
-    }) { paddingValues ->
+    MainScaffold(
+        floatingIcon = Icons.Default.Add,
+        floatingButtonClick = { navigator.navigate(AddNoteDestination(null)) },
+        snackBarHost = { SnackbarHost(hostState = snackBarState) },
+        onSettingClick = { navigator.navigate(SettingScreenDestination) }) { paddingValues ->
 
 
         if (notesList.isEmpty()) LottieAnimation(
@@ -116,23 +116,10 @@ fun ShowNotes(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                TextField(
-                    value = searchText,
-                    onValueChange = { viewModel.onSearchTextChange(it) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 10.dp, end = 10.dp)
-                        .focusRequester(focusRequester),
-                    textStyle = MaterialTheme.typography.titleMedium,
-                    singleLine = true,
-                    leadingIcon = {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
-                    },
-                    placeholder = { Text(text = "Search a note") },
-                    colors = TextFieldDefaults.textFieldColors(
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    )
+                Searchbar(
+                    searchText = searchText,
+                    focusRequester = focusRequester,
+                    onSearchTextChange = viewModel::onSearchTextChange
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -150,10 +137,6 @@ fun ShowNotes(
                 }
             }
         }
-
-        if (isAddButtonClicked) navigator.navigate(AddNoteDestination(null))
-        if (isSettingClicked) navigator.navigate(SettingScreenDestination)
-
     }
 
 

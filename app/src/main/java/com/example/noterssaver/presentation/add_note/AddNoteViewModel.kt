@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.noterssaver.domain.model.InvalidNoteException
 import com.example.noterssaver.domain.model.Note
 import com.example.noterssaver.domain.usecases.notes.NotesUseCases
+import com.example.noterssaver.util.Extensions.debug
 import com.example.noterssaver.util.NoteState
 import kotlinx.coroutines.launch
 
@@ -43,10 +44,9 @@ class AddNoteViewModel(private val notesUseCases: NotesUseCases) :
         currentNoteToEdit = note
     }
 
-    fun saveNote() {
+    fun saveNote(currentNote: Note? = null) {
         viewModelScope.launch {
-
-            val note = Note(
+            val note = currentNote ?: Note(
                 title = title,
                 content = content,
                 timestamp = System.currentTimeMillis(),

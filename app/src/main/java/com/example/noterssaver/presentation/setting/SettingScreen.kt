@@ -1,7 +1,9 @@
 package com.example.noterssaver.presentation.setting
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.noterssaver.domain.utils.OrderType
@@ -9,7 +11,6 @@ import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.presentation.destinations.ThemeScreenDestination
 import com.example.noterssaver.presentation.setting.component.SettingOption
-import com.example.noterssaver.util.Extensions.debug
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
@@ -27,9 +28,6 @@ fun SettingScreen(
     settingViewModel: SettingViewModel = koinViewModel()
 ) {
 
-    var menuClick by remember {
-        mutableStateOf("")
-    }
 
     viewModel.updateTitle("Settings")
 
@@ -48,7 +46,7 @@ fun SettingScreen(
                 subtitle = currentTheme.name,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                menuClick = "Theme"
+                navigator.navigate(ThemeScreenDestination)
             }
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -75,13 +73,6 @@ fun SettingScreen(
         }
     }
 
-    when (menuClick) {
-        "Theme" -> {
-            navigator.navigate(ThemeScreenDestination)
-
-        }
-
-    }
 }
 
 
