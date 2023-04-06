@@ -8,14 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.unit.dp
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.presentation.setting.component.RadioOption
 import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.androidx.compose.koinViewModel
-import java.util.*
 
 /*
  * Created by Shahid Iqbal on 4/2/2023.

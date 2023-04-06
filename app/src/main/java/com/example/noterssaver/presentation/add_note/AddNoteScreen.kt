@@ -55,7 +55,7 @@ fun AddNote(
         }
 
         note?.let {
-            with(viewModel){
+            with(viewModel) {
                 updateCurrentEditableNote(it)
                 onTitleChange(it.title)
                 onContentChange(it.content)
@@ -116,10 +116,11 @@ fun AddNote(
                     .wrapContentHeight()
                     .padding(bottom = 10.dp),
                 placeholder = { Text(text = "Write here what u want to save.") },
-                colors = TextFieldDefaults.textFieldColors(
+                colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    containerColor = Color.Transparent
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent
                 )
             )
         }

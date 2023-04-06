@@ -1,7 +1,5 @@
 package com.example.noterssaver.domain.model
 
-import android.content.res.Resources.Theme
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.noterssaver.presentation.setting.ThemeStyle

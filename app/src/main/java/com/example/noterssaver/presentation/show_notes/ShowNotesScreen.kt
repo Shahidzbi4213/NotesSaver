@@ -7,12 +7,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -47,9 +50,9 @@ fun ShowNotes(
 ) {
 
 
-    val notesList by viewModel.currentNotes.collectAsState()
-    val searchText by viewModel.searchText.collectAsState(initial = "")
-    val lastDeletedNotes by viewModel.lastDeleteNote.collectAsState(initial = null)
+    val notesList by viewModel.currentNotes.collectAsStateWithLifecycle()
+    val searchText by viewModel.searchText.collectAsStateWithLifecycle()
+    val lastDeletedNotes by viewModel.lastDeleteNote.collectAsStateWithLifecycle()
     val deleteState = viewModel.deleteState
     val copiedState = viewModel.copyClick
 
@@ -112,9 +115,11 @@ fun ShowNotes(
                 .padding(paddingValues)
                 .clickable {
                     focusManager.clearFocus()
-                }) {
+                })
+            {
 
                 Spacer(modifier = Modifier.height(10.dp))
+
 
                 Searchbar(
                     searchText = searchText,
@@ -136,6 +141,7 @@ fun ShowNotes(
                     }
                 }
             }
+
         }
     }
 

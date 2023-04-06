@@ -17,7 +17,7 @@ object SettingModule {
         single {
             SettingUseCases(
                 appLocker = AppLock(get()),
-                updateDarkMode = UpdateDarkMode(get()),
+                updateTheme = UpdateTheme(get()),
                 clearAll = ClearAll(get()),
                 currentTheme = CurrentTheme(get()),
                 emptySetting = EmptySetting(get())

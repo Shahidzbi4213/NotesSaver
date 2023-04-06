@@ -30,6 +30,8 @@ fun Searchbar(
     onSearchTextChange: (String) -> Unit
 ) {
 
+
+
     TextField(
         value = searchText,
         onValueChange = { onSearchTextChange(it) },
@@ -44,7 +46,7 @@ fun Searchbar(
             Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
         },
         placeholder = { Text(text = placeholderText) },
-        colors = TextFieldDefaults.textFieldColors(
+        colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         ),

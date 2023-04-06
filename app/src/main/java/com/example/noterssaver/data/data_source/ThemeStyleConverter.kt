@@ -9,8 +9,8 @@ import com.example.noterssaver.presentation.setting.ThemeStyle
 
 class ThemeStyleConverter {
     @TypeConverter
-    fun fromThemeStyle(themeStyle: ThemeStyle): String {
-        return themeStyle.name
+    fun fromThemeStyle(settingsData: ThemeStyle): String {
+        return settingsData.name
     }
 
     @TypeConverter

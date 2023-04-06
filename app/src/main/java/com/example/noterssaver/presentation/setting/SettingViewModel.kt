@@ -12,6 +12,8 @@ import kotlinx.coroutines.launch
 
 class SettingViewModel(private val useCases: SettingUseCases) : ViewModel() {
 
+
+
     val currentTheme: Flow<ThemeStyle> =
         useCases.currentTheme.invoke()
 
@@ -24,9 +26,8 @@ class SettingViewModel(private val useCases: SettingUseCases) : ViewModel() {
 
     fun updateTheme(value: ThemeStyle) {
         viewModelScope.launch {
-            useCases.updateDarkMode(value)
+            useCases.updateTheme(value)
         }
 
     }
-
 }
