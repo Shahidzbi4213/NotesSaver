@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.presentation.setting.component.RadioOption
@@ -29,7 +29,8 @@ fun ThemeScreen(
     mainViewModel.updateTitle("Theme")
 
     val themes = ThemeStyle.values().toList()
-    val currentTheme by settingViewModel.currentTheme.collectAsState(initial = ThemeStyle.LIGHT)
+
+    val currentTheme by settingViewModel.currentThemeState.collectAsStateWithLifecycle(initialValue = ThemeStyle.LIGHT)
 
 
     MainScaffold { paddingValues ->
@@ -38,11 +39,17 @@ fun ThemeScreen(
             contentPadding = PaddingValues(10.dp),
             modifier = Modifier.padding(paddingValues)
         ) {
-            items(themes) {
-                RadioOption(title = it.name.lowercase().replaceFirstChar { char -> char.uppercase() },
-                    selected = it.name == currentTheme.name,
-                    onClick = { settingViewModel.updateTheme(it) })
+            items(themes) { item ->
+                val name = when (item.ordinal) {
+                    0 -> "System Default"
+                    2 -> "Dark"
+                    else -> "Light"
+                }
+
+                RadioOption(title = name, selected = currentTheme.ordinal == item.ordinal,
+                    onClick = { settingViewModel.updateTheme(item) })
             }
         }
     }
 }
+

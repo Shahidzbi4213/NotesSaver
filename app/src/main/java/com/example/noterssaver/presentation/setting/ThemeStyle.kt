@@ -1,5 +1,5 @@
 package com.example.noterssaver.presentation.setting
 
 enum class ThemeStyle {
-    AUTO, LIGHT, DARK
+    SYSTEM_DEFAULT, LIGHT, DARK
 }

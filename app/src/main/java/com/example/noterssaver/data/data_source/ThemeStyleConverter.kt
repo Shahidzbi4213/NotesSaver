@@ -18,7 +18,7 @@ class ThemeStyleConverter {
         return try {
             ThemeStyle.valueOf(value)
         } catch (ex: IllegalArgumentException) {
-            ThemeStyle.AUTO // Default value if the stored value is invalid
+            ThemeStyle.LIGHT // Default value if the stored value is invalid
         }
     }
 }

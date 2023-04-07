@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
  * Created by Shahid Iqbal on 4/1/2023.
  */
 
-class CurrentTheme(private val repo: SettingRepo) {
+class GetCurrentThemeStatus(private val repo: SettingRepo) {
 
 
     operator fun invoke(): Flow<ThemeStyle> {

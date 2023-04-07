@@ -13,10 +13,10 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun currentAppTheme(vm: SettingViewModel = koinViewModel()): Boolean {
-    val theme by vm.currentTheme.collectAsState(ThemeStyle.LIGHT)
+    val theme by vm.currentThemeState.collectAsState(ThemeStyle.LIGHT)
     return theme.let {
         when (it) {
-            ThemeStyle.AUTO -> isSystemInDarkTheme()
+            ThemeStyle.SYSTEM_DEFAULT -> isSystemInDarkTheme()
             ThemeStyle.LIGHT -> false
             ThemeStyle.DARK -> true
         }

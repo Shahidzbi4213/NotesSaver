@@ -16,10 +16,11 @@ object SettingModule {
         single<SettingRepo> { SettingRepoImpl(get()) }
         single {
             SettingUseCases(
-                appLocker = AppLock(get()),
+                updateAppLocker = UpdateAppLock(get()),
                 updateTheme = UpdateTheme(get()),
                 clearAll = ClearAll(get()),
-                currentTheme = CurrentTheme(get()),
+                getCurrentThemeStatus = GetCurrentThemeStatus(get()),
+                getAppLockStatus = GetAppLockStatus(get()),
                 emptySetting = EmptySetting(get())
             )
         }

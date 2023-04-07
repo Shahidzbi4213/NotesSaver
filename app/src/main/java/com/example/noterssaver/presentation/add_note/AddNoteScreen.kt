@@ -90,7 +90,7 @@ fun AddNote(
                 textStyle = MaterialTheme.typography.titleMedium,
                 singleLine = true,
                 placeholder = { Text(text = "Title Of Note") },
-                colors = TextFieldDefaults.textFieldColors(
+                colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
 
