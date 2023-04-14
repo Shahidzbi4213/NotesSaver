@@ -24,7 +24,9 @@ fun RadioOption(
             .padding(vertical = 8.dp)
     ) {
         RadioButton(
-            selected = selected, onClick = onClick, modifier = Modifier.padding(end = 16.dp)
+            selected = selected,
+            onClick = onClick,
+            modifier = Modifier.padding(end = 16.dp)
         )
         Text(text = title)
     }

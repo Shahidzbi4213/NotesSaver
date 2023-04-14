@@ -6,11 +6,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import org.koin.androidx.compose.koinViewModel
 
-/*
- * Created by Shahid Iqbal on 4/1/2023.
- */
-
-
 @Composable
 fun currentAppTheme(vm: SettingViewModel = koinViewModel()): Boolean {
     val theme by vm.currentThemeState.collectAsState(ThemeStyle.LIGHT)
@@ -21,6 +16,5 @@ fun currentAppTheme(vm: SettingViewModel = koinViewModel()): Boolean {
             ThemeStyle.DARK -> true
         }
     }
-
 }
 
