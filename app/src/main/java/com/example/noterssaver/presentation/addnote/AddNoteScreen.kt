@@ -17,7 +17,7 @@ import com.example.noterssaver.data.model.Note
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.util.Extensions.snackBar
 import com.example.noterssaver.presentation.util.NoteState
-import com.example.noterssaver.presentation.view.components.MainScaffold
+import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel

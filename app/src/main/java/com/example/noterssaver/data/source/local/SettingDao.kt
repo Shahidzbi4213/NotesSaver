@@ -1,4 +1,4 @@
-package com.example.noterssaver.data.source.database
+package com.example.noterssaver.data.source.local
 
 import androidx.room.*
 import com.example.noterssaver.data.model.Setting

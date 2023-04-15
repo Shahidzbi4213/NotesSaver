@@ -16,7 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.noterssaver.R
 import com.example.noterssaver.presentation.authentication.component.InformationDialog
 import com.example.noterssaver.presentation.setting.SettingViewModel
-import com.example.noterssaver.presentation.view.components.MainScaffold
+import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
@@ -41,11 +41,7 @@ fun BiometricScreen(
                 Switch(checked = appLockState, onCheckedChange = {
                     if (appLockState) settingViewModel.updateAppLock(false)
                     else {
-                        val biometricManager = BiometricManager.from(context)
-                        when (biometricManager.canAuthenticate(
-                            BiometricManager.Authenticators.BIOMETRIC_STRONG or
-                                    BiometricManager.Authenticators.DEVICE_CREDENTIAL
-                        )) {
+                        when (settingViewModel.canAuthenticate()) {
                             BiometricManager.BIOMETRIC_SUCCESS -> {
                                 settingViewModel.updateAppLock(true)
                             }

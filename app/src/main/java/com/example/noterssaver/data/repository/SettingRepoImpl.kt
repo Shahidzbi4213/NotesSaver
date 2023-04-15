@@ -1,6 +1,6 @@
 package com.example.noterssaver.data.repository
 
-import com.example.noterssaver.data.source.database.SettingDao
+import com.example.noterssaver.data.source.local.SettingDao
 import com.example.noterssaver.data.model.Setting
 import com.example.noterssaver.domain.repository.SettingRepo
 import com.example.noterssaver.presentation.setting.ThemeStyle

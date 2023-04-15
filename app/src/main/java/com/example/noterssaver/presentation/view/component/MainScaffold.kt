@@ -1,4 +1,4 @@
-package com.example.noterssaver.presentation.view.components
+package com.example.noterssaver.presentation.view.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons

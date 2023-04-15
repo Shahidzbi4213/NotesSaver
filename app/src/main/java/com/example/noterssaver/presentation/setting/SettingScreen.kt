@@ -13,7 +13,7 @@ import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.destinations.BiometricScreenDestination
 import com.example.noterssaver.presentation.destinations.ThemeScreenDestination
 import com.example.noterssaver.presentation.setting.component.SingleSettingItem
-import com.example.noterssaver.presentation.view.components.MainScaffold
+import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel

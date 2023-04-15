@@ -1,6 +1,6 @@
 package com.example.noterssaver.data.repository
 
-import com.example.noterssaver.data.source.database.NotesDao
+import com.example.noterssaver.data.source.local.NotesDao
 import com.example.noterssaver.data.model.Note
 import com.example.noterssaver.domain.repository.NotesRepo
 import kotlinx.coroutines.flow.Flow

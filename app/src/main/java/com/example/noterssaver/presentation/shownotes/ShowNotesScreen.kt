@@ -25,7 +25,7 @@ import com.example.noterssaver.presentation.destinations.AddNoteDestination
 import com.example.noterssaver.presentation.destinations.SettingScreenDestination
 import com.example.noterssaver.presentation.util.Extensions.snackBar
 import com.example.noterssaver.presentation.util.NoteState
-import com.example.noterssaver.presentation.view.components.MainScaffold
+import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
