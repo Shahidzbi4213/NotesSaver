@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:app/src/main/java/com/example/noterssaver/worker/DeleteNotesWorker.kt
 package com.example.noterssaver.worker
-========
-package com.example.noterssaver.app.worker
->>>>>>>> origin/master:app/src/main/java/com/example/noterssaver/app/worker/DeleteNotesWorker.kt
 
 import android.content.Context
 import androidx.work.CoroutineWorker

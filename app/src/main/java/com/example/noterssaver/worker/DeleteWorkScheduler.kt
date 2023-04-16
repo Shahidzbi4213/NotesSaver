@@ -1,8 +1,5 @@
-<<<<<<<< HEAD:app/src/main/java/com/example/noterssaver/worker/DeleteWorkScheduler.kt
 package com.example.noterssaver.worker
-========
-package com.example.noterssaver.app.worker
->>>>>>>> origin/master:app/src/main/java/com/example/noterssaver/app/worker/DeleteWorkScheduler.kt
+
 
 import android.content.Context
 import androidx.work.ExistingPeriodicWorkPolicy

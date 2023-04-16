@@ -1,11 +1,12 @@
 package com.example.noterssaver
 
 import android.app.Application
+import com.example.noterssaver.di.appModule
+import com.example.noterssaver.di.biometricModule
+import com.example.noterssaver.di.databaseModule
+import com.example.noterssaver.di.notesModule
+import com.example.noterssaver.di.settingModule
 import com.example.noterssaver.worker.DeleteWorkScheduler.doWork
-import com.example.noterssaver.di.BiometricModule
-import com.example.noterssaver.di.MainModule
-import com.example.noterssaver.di.NotesModule
-import com.example.noterssaver.di.SettingModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.component.KoinComponent
@@ -25,10 +26,11 @@ class MyApp : Application(), KoinComponent {
             workManagerFactory()
             loadKoinModules(
                 listOf(
-                    MainModule.mainModule,
-                    NotesModule.notesModule,
-                    SettingModule.settingModule,
-                    BiometricModule.biometricModule
+                    appModule,
+                    notesModule,
+                    settingModule,
+                    databaseModule,
+                    biometricModule
                 )
             )
         }
