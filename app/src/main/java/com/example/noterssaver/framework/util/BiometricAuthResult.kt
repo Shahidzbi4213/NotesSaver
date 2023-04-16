@@ -1,4 +1,4 @@
-package com.example.noterssaver.framework.authentication
+package com.example.noterssaver.framework.util
 
 sealed class BiometricAuthResult {
 

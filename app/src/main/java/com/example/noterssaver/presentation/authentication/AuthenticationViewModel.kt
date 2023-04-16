@@ -4,7 +4,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noterssaver.domain.usecases.authentication.BiometricAvailability
-import com.example.noterssaver.framework.authentication.BiometricAuthResult
+import com.example.noterssaver.framework.util.BiometricAuthResult
 import kotlinx.coroutines.launch
 
 /*

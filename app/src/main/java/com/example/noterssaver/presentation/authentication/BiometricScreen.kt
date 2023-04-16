@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -14,10 +13,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.noterssaver.R
-import com.example.noterssaver.framework.authentication.BiometricAuthResult
+import com.example.noterssaver.framework.util.BiometricAuthResult
 import com.example.noterssaver.presentation.authentication.component.InformationDialog
-import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.presentation.setting.SettingViewModel
+import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
