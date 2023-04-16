@@ -9,12 +9,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.noterssaver.R
 import com.example.noterssaver.domain.model.Note
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.components.MainScaffold
-import com.example.noterssaver.util.Extensions.debug
 import com.example.noterssaver.util.Extensions.snackBar
 import com.example.noterssaver.util.NoteState
 import com.ramcosta.composedestinations.annotation.Destination
@@ -25,7 +26,6 @@ import org.koin.androidx.compose.koinViewModel
 // Created by Shahid Iqbal on 3/13/2023.
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Destination
 fun AddNote(
@@ -34,7 +34,6 @@ fun AddNote(
     viewModel: AddNoteViewModel = koinViewModel(),
     mainViewModel: MainViewModel = koinViewModel()
 ) {
-
     val snackBarState = remember { SnackbarHostState() }
     val currentNoteState = viewModel.addEditState
 
@@ -44,7 +43,7 @@ fun AddNote(
 
 
 
-    mainViewModel.updateTitle("Add Note")
+    mainViewModel.updateTitle(stringResource(R.string.add_note))
     LaunchedEffect(key1 = currentNoteState, key2 = note, block = {
         currentNoteState?.let {
             when (it) {
@@ -76,7 +75,7 @@ fun AddNote(
         ) {
 
             Text(
-                text = "Title",
+                text = stringResource(R.string.title),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 5.dp),
@@ -89,11 +88,10 @@ fun AddNote(
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = MaterialTheme.typography.titleMedium,
                 singleLine = true,
-                placeholder = { Text(text = "Title Of Note") },
+                placeholder = { Text(text = stringResource(id = R.string.title_of_note)) },
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
-
                 )
             )
 
@@ -101,7 +99,7 @@ fun AddNote(
             Spacer(modifier = Modifier.height(25.dp))
 
             Text(
-                text = "Detail About Note",
+                text = stringResource(id = R.string.detail_of_note),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 5.dp),
@@ -115,7 +113,7 @@ fun AddNote(
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .padding(bottom = 10.dp),
-                placeholder = { Text(text = "Write here what u want to save.") },
+                placeholder = { Text(text = stringResource(id = R.string.write_to_save)) },
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
@@ -126,3 +124,4 @@ fun AddNote(
         }
     }
 }
+

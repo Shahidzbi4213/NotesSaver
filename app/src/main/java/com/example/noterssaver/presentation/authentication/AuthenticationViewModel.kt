@@ -1,13 +1,10 @@
 package com.example.noterssaver.presentation.authentication
 
-import androidx.biometric.BiometricManager
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noterssaver.domain.usecases.authentication.BiometricAvailability
-import com.example.noterssaver.domain.utils.BiometricAuthResult
-import com.example.noterssaver.util.Extensions.debug
-import kotlinx.coroutines.flow.*
+import com.example.noterssaver.framework.authentication.BiometricAuthResult
 import kotlinx.coroutines.launch
 
 /*

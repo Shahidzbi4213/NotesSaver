@@ -2,7 +2,7 @@ package com.example.noterssaver.di
 
 import com.example.noterssaver.data.data_source.AppDatabase
 import com.example.noterssaver.data.repository.NotesRepoImpl
-import com.example.noterssaver.data.worker.DeleteNotesWorker
+import com.example.noterssaver.worker.DeleteNotesWorker
 import com.example.noterssaver.domain.repository.NotesRepo
 import com.example.noterssaver.domain.usecases.notes.*
 import com.example.noterssaver.presentation.add_note.AddNoteViewModel

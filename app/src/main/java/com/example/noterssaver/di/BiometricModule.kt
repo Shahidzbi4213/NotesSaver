@@ -1,7 +1,7 @@
 package com.example.noterssaver.di
 
-import com.example.noterssaver.data.repository.BiometricAuthRepositoryImpl
-import com.example.noterssaver.domain.repository.BiometricAuthRepo
+import com.example.noterssaver.framework.authentication.BiometricAuthRepositoryImpl
+import com.example.noterssaver.framework.authentication.BiometricAuthRepo
 import com.example.noterssaver.domain.usecases.authentication.BiometricAvailability
 import com.example.noterssaver.presentation.authentication.AuthenticationViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel

@@ -1,7 +1,7 @@
 package com.example.noterssaver
 
 import android.app.Application
-import com.example.noterssaver.data.worker.DeleteWorkScheduler.doWork
+import com.example.noterssaver.worker.DeleteWorkScheduler.doWork
 import com.example.noterssaver.di.BiometricModule
 import com.example.noterssaver.di.MainModule
 import com.example.noterssaver.di.NotesModule

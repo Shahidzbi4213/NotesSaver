@@ -1,4 +1,4 @@
-package com.example.noterssaver.data.worker
+package com.example.noterssaver.worker
 
 import android.content.Context
 import androidx.work.ExistingPeriodicWorkPolicy
