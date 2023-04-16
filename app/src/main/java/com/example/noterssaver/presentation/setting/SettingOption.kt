@@ -7,7 +7,6 @@ data class SettingOption(
     val title: String,
     @DrawableRes val icon: Int
 ) {
-
     companion object {
         val SETTING_MENU = listOf(
             SettingOption("Appearance", R.drawable.light),

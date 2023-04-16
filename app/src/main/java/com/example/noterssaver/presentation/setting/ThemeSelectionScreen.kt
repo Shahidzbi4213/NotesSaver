@@ -10,14 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.noterssaver.presentation.MainViewModel
-import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.presentation.setting.component.RadioOption
+import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.androidx.compose.koinViewModel
-
-/*
- * Created by Shahid Iqbal on 4/2/2023.
- */
 
 @Destination
 @Composable
@@ -25,16 +21,12 @@ fun ThemeScreen(
     settingViewModel: SettingViewModel = koinViewModel(),
     mainViewModel: MainViewModel = koinViewModel()
 ) {
-
     mainViewModel.updateTitle("Theme")
 
     val themes = ThemeStyle.values().toList()
-
     val currentTheme by settingViewModel.currentThemeState.collectAsStateWithLifecycle(initialValue = ThemeStyle.LIGHT)
 
-
     MainScaffold { paddingValues ->
-
         LazyColumn(
             contentPadding = PaddingValues(10.dp),
             modifier = Modifier.padding(paddingValues)
@@ -45,7 +37,6 @@ fun ThemeScreen(
                     2 -> "Dark"
                     else -> "Light"
                 }
-
                 RadioOption(title = name, selected = currentTheme.ordinal == item.ordinal,
                     onClick = { settingViewModel.updateTheme(item) })
             }

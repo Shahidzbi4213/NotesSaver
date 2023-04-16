@@ -10,17 +10,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.noterssaver.R
 import com.example.noterssaver.presentation.MainViewModel
-import com.example.noterssaver.presentation.components.MainScaffold
 import com.example.noterssaver.presentation.destinations.BiometricScreenDestination
 import com.example.noterssaver.presentation.destinations.ThemeScreenDestination
 import com.example.noterssaver.presentation.setting.component.SingleSettingItem
+import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
-
-/*
- * Created by Shahid Iqbal on 3/31/2023.
- */
 
 @Destination
 @Composable
@@ -31,14 +27,11 @@ fun SettingScreen(
     settingViewModel: SettingViewModel = koinViewModel()
 ) {
 
-
     val currentTheme by settingViewModel.currentThemeState.collectAsStateWithLifecycle(initialValue = ThemeStyle.LIGHT)
 
     viewModel.updateTitle("Settings")
 
-
     MainScaffold {
-
         LazyColumn(
             modifier = modifier.padding(it),
             verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -61,10 +54,8 @@ fun SettingScreen(
                     }
                 }
             }
-
         }
     }
-
 }
 
 @Composable
@@ -77,8 +68,3 @@ private fun updateSettingOptionIconForTheme(
         else -> R.drawable.light
     }
 }
-
-
-
-
-
