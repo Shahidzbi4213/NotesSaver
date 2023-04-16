@@ -7,14 +7,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.noterssaver.R
 import com.example.noterssaver.presentation.setting.SettingOption
 
-/*
- * Created by Shahid Iqbal on 4/6/2023.
- */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,8 +37,7 @@ fun SingleSettingItem(option: SettingOption, onClick: () -> Unit) {
                 text = option.title, style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
                 ),
-                modifier = Modifier.weight(1f)
-            )
+                modifier = Modifier.weight(1f))
 
         }
     }

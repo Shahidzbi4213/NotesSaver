@@ -1,14 +1,10 @@
 package com.example.noterssaver.data.repository
 
-import com.example.noterssaver.data.data_source.SettingDao
-import com.example.noterssaver.domain.model.Setting
+import com.example.noterssaver.data.source.local.SettingDao
+import com.example.noterssaver.data.model.Setting
 import com.example.noterssaver.domain.repository.SettingRepo
 import com.example.noterssaver.presentation.setting.ThemeStyle
 import kotlinx.coroutines.flow.Flow
-
-/*
- * Created by Shahid Iqbal on 3/31/2023.
- */
 
 class SettingRepoImpl(private val dao: SettingDao) : SettingRepo {
     override suspend fun insertEmpty(setting: Setting) {

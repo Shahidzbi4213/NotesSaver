@@ -1,12 +1,9 @@
 package com.example.noterssaver.data.repository
 
-import com.example.noterssaver.data.data_source.NotesDao
-import com.example.noterssaver.domain.model.Note
+import com.example.noterssaver.data.source.local.NotesDao
+import com.example.noterssaver.data.model.Note
 import com.example.noterssaver.domain.repository.NotesRepo
 import kotlinx.coroutines.flow.Flow
-
-
-// Created by Shahid Iqbal on 3/13/2023.
 
 class NotesRepoImpl(private val dao: NotesDao) : NotesRepo {
 
@@ -33,5 +30,4 @@ class NotesRepoImpl(private val dao: NotesDao) : NotesRepo {
     override suspend fun deleteAllNotes() {
         dao.deleteAllNotes()
     }
-
 }
