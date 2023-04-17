@@ -11,4 +11,8 @@
     <string name="title">Title</string>
     <string name="add_note">Add Note</string>
     <string name="unlock_with_fingerprint">Unlock with Fingerprint</string>
+    <string name="biometric_title">Secure Note with Biometric</string>
+    <string name="biometric_subtitle">Unlock Your Notes with Biometric</string>
+    <string name="cancel">Cancel</string>
+    <string name="biometric_description">Embrace the Future of Note-taking! Say Hello to Effortless Access with Biometric Authentication.Just Secure and Convenient Note-taking!</string>
 </resources>

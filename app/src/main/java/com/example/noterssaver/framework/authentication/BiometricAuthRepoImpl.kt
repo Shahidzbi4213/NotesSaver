@@ -3,6 +3,7 @@ package com.example.noterssaver.framework.authentication
 import android.content.Context
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import com.example.noterssaver.R
 import com.example.noterssaver.framework.util.BiometricAuthResult
 import com.example.noterssaver.framework.util.BiometricAuthResult.Failure
