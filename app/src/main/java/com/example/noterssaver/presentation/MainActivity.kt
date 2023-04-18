@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.noterssaver.framework.authentication.AuthState
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private val authViewModel by viewModel<AuthenticationViewModel>()
     private val settingViewModel by viewModel<SettingViewModel>()
-    //private var appLockState = false
+    private var appLockState = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,48 +31,30 @@ class MainActivity : AppCompatActivity() {
 
 
         setContent {
-            ReplyTheme(
-                dynamicColor = false, darkTheme = currentAppTheme()
-            ) {
+            ReplyTheme(dynamicColor = true, darkTheme = currentAppTheme()) {
 
                 val authenticationState by authViewModel.biometricAuthenticationState.collectAsStateWithLifecycle()
-                val appLock by settingViewModel.appLockState.collectAsStateWithLifecycle()
 
-                if (!authViewModel.isAuthenticationStarted) {
+                LaunchedEffect(key1 = Unit) {
+                    authViewModel.startAuthentication(this@MainActivity)
 
-                    if (appLock) {
-                        authViewModel.startAuthentication(this@MainActivity)
-                        authViewModel.authStartState()
-                        when (authenticationState) {
-                            AuthState.Authenticated -> SetNavHost()
-
-                            AuthState.Authenticating -> {}
-
-                            AuthState.AuthenticationFailed -> finishAffinity()
-                        }
-                    } else SetNavHost()
+                    settingViewModel.appLockState.collect {
+                        appLockState = it
+                    }
                 }
 
+                if (appLockState)
+                    when (authenticationState) {
+                        AuthState.Authenticated -> SetNavHost()
 
-                /* LaunchedEffect(key1 = Unit) {
-                     settingViewModel.appLockState.collect {
-                         appLockState = it
-                     }
-                 }
+                        AuthState.Authenticating -> {}
 
-                 if (appLockState)
-                     when (authenticationState) {
-                         AuthState.Authenticated -> SetNavHost()
-
-                         AuthState.Authenticating -> {}
-
-                         AuthState.AuthenticationFailed -> finishAffinity()
-                     }
-                 else SetNavHost()*/
+                        AuthState.AuthenticationFailed -> finishAffinity()
+                    }
+                else SetNavHost()
 
             }
         }
-
     }
 
     @Composable

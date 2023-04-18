@@ -6,9 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noterssaver.domain.usecase.authentication.BiometricUseCases
 import com.example.noterssaver.framework.util.BiometricAuthResult
-import com.example.noterssaver.presentation.MainActivity
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /*
@@ -22,8 +21,8 @@ class AuthenticationViewModel(
     var biometricAvailabilityState by mutableStateOf<BiometricAuthResult>(BiometricAuthResult.Empty)
     var biometricAuthenticationState = biometricUseCases.biometricAuthenticationState.invoke()
 
-    var isAuthenticationStarted by mutableStateOf(false)
-        private set
+    private var _isAuthenticationStarted = MutableStateFlow(false)
+    val isAuthenticatedStarted get() = _isAuthenticationStarted.asStateFlow()
 
 
     init {
@@ -35,10 +34,12 @@ class AuthenticationViewModel(
     fun startAuthentication(activity: AppCompatActivity) {
         viewModelScope.launch {
             biometricUseCases.biometricAuthentication.invoke(activity)
+
         }
     }
 
-    fun authStartState() {
-        isAuthenticationStarted = !isAuthenticationStarted
+    fun updateAuthenticationStartState() = viewModelScope.launch {
+        _isAuthenticationStarted.value = true
     }
+
 }
