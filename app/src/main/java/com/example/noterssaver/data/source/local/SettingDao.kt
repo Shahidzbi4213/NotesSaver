@@ -23,6 +23,7 @@ interface SettingDao {
     @Query("SELECT isAppLock FROM setting")
     fun getAppLockStatus(): Flow<Boolean>
 
+
     @Query("UPDATE setting set currentTheme = :value")
     suspend fun updateCurrentTheme(value: ThemeStyle)
 

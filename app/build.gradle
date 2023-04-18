@@ -35,7 +35,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.4.3'
+        kotlinCompilerExtensionVersion '1.4.5'
     }
     packagingOptions {
         resources {
@@ -76,10 +76,10 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     //koin
-    implementation "io.insert-koin:koin-core:3.3.3"
-    implementation "io.insert-koin:koin-android:3.3.3"
+    implementation "io.insert-koin:koin-core:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
     implementation "io.insert-koin:koin-androidx-compose:3.4.2"
-    implementation "io.insert-koin:koin-androidx-workmanager:3.3.3"
 
     //Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'

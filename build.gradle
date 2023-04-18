@@ -3,6 +3,7 @@ buildscript {
         compose_version = '1.4.1'
         room_version = "2.5.1"
         work_version = "2.8.1"
+        koin_version = "3.3.3"
 
     }
 }
@@ -11,6 +12,6 @@ buildscript {
 plugins {
     id 'com.android.application' version '8.0.0' apply false
     id 'com.android.library' version '8.0.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
-    id 'com.google.devtools.ksp' version '1.8.0-1.0.9'
+    id 'org.jetbrains.kotlin.android' version '1.8.20' apply false
+    id 'com.google.devtools.ksp' version '1.8.20-1.0.11'
 }

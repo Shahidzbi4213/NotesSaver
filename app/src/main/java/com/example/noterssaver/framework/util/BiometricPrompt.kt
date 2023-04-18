@@ -16,6 +16,5 @@ object BiometricPrompt {
         .setSubtitle(getString(R.string.biometric_subtitle))
         .setNegativeButtonText(getString(R.string.cancel))
         .setAllowedAuthenticators(BIOMETRIC_STRONG)
-        .setDescription(getString(R.string.biometric_description))
         .build()
 }

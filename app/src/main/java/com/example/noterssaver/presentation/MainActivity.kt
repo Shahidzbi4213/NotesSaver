@@ -1,81 +1,83 @@
 package com.example.noterssaver.presentation
 
 import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
-import com.example.noterssaver.framework.util.BiometricPrompt.getBiometricPrompt
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.noterssaver.framework.authentication.AuthState
+import com.example.noterssaver.presentation.authentication.AuthenticationViewModel
 import com.example.noterssaver.presentation.destinations.ShowNotesDestination
+import com.example.noterssaver.presentation.setting.SettingViewModel
 import com.example.noterssaver.presentation.setting.currentAppTheme
 import com.example.noterssaver.presentation.util.theme.ReplyTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
-import java.util.concurrent.Executor
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var executor: Executor
-    private lateinit var biometricPrompt: BiometricPrompt
-    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    private val authViewModel by viewModel<AuthenticationViewModel>()
+    private val settingViewModel by viewModel<SettingViewModel>()
+    //private var appLockState = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         supportActionBar?.hide()
 
-        promptInfo = this.getBiometricPrompt()
-        executor = ContextCompat.getMainExecutor(this)
-
-        biometricPrompt = BiometricPrompt(this, executor,
-            object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(
-                    errorCode: Int,
-                    errString: CharSequence
-                ) {
-                    super.onAuthenticationError(errorCode, errString)
-                    finishAffinity()
-                }
-
-                override fun onAuthenticationSucceeded(
-                    result: BiometricPrompt.AuthenticationResult
-                ) {
-                    super.onAuthenticationSucceeded(result)
-                    Toast.makeText(
-                        applicationContext,
-                        "Authentication succeeded!", Toast.LENGTH_SHORT
-                    )
-                        .show()
-                }
-
-                override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                    Toast.makeText(
-                        applicationContext, "Authentication failed",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                }
-            })
-
 
 
         setContent {
             ReplyTheme(
-                dynamicColor = false,
-                darkTheme = currentAppTheme()
+                dynamicColor = false, darkTheme = currentAppTheme()
             ) {
 
-                biometricPrompt.authenticate(promptInfo)
+                val authenticationState by authViewModel.biometricAuthenticationState.collectAsStateWithLifecycle()
+                val appLock by settingViewModel.appLockState.collectAsStateWithLifecycle()
 
-                DestinationsNavHost(
-                    navGraph = NavGraphs.root,
-                    startRoute = ShowNotesDestination,
-                )
+                if (!authViewModel.isAuthenticationStarted) {
+
+                    if (appLock) {
+                        authViewModel.startAuthentication(this@MainActivity)
+                        authViewModel.authStartState()
+                        when (authenticationState) {
+                            AuthState.Authenticated -> SetNavHost()
+
+                            AuthState.Authenticating -> {}
+
+                            AuthState.AuthenticationFailed -> finishAffinity()
+                        }
+                    } else SetNavHost()
+                }
+
+
+                /* LaunchedEffect(key1 = Unit) {
+                     settingViewModel.appLockState.collect {
+                         appLockState = it
+                     }
+                 }
+
+                 if (appLockState)
+                     when (authenticationState) {
+                         AuthState.Authenticated -> SetNavHost()
+
+                         AuthState.Authenticating -> {}
+
+                         AuthState.AuthenticationFailed -> finishAffinity()
+                     }
+                 else SetNavHost()*/
+
             }
         }
 
     }
+
+    @Composable
+    private fun SetNavHost() = DestinationsNavHost(
+        navGraph = NavGraphs.root,
+        startRoute = ShowNotesDestination,
+    )
 
 }
