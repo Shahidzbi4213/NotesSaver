@@ -18,40 +18,35 @@ class BiometricAuthenticatorRepoImpl(private val settingDao: SettingDao) :
     private val authenticationState = MutableStateFlow<AuthState>(AuthState.Authenticating)
 
 
-    override suspend fun initBiometricPrompt(context: AppCompatActivity) {
+    override suspend fun initBiometricPrompt(context: AppCompatActivity, startState: Boolean) {
 
-        settingDao.getAppLockStatus().collect { value ->
-            if (value)
-            {
-                val executor = ContextCompat.getMainExecutor(context)
-                BiometricPrompt(
-                    (context),
-                    executor,
-                    object : BiometricPrompt.AuthenticationCallback() {
+        if (!startState) {
+            val executor = ContextCompat.getMainExecutor(context)
+            BiometricPrompt(
+                (context),
+                executor,
+                object : BiometricPrompt.AuthenticationCallback() {
 
-                        override fun onAuthenticationError(
-                            errorCode: Int,
-                            errString: CharSequence
-                        ) {
-                            super.onAuthenticationError(errorCode, errString)
-                            authenticationState.value = AuthState.AuthenticationFailed
-                        }
+                    override fun onAuthenticationError(
+                        errorCode: Int,
+                        errString: CharSequence
+                    ) {
+                        super.onAuthenticationError(errorCode, errString)
+                        authenticationState.value = AuthState.AuthenticationFailed
+                    }
 
-                        override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                            super.onAuthenticationSucceeded(result)
-                            authenticationState.value = AuthState.Authenticated
+                    override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                        super.onAuthenticationSucceeded(result)
+                        authenticationState.value = AuthState.Authenticated
 
-                        }
+                    }
 
-                        override fun onAuthenticationFailed() {
-                            super.onAuthenticationFailed()
-                            authenticationState.value = AuthState.AuthenticationFailed
-                        }
-                    }).authenticate(context.getBiometricPrompt())
-            }
+                    override fun onAuthenticationFailed() {
+                        super.onAuthenticationFailed()
+                        authenticationState.value = AuthState.AuthenticationFailed
+                    }
+                }).authenticate(context.getBiometricPrompt())
         }
-
-
 
 
     }

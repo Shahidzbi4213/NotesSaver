@@ -11,8 +11,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.noterssaver.R
 import com.example.noterssaver.data.model.Note
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.util.Extensions.snackBar
@@ -55,16 +57,19 @@ fun AddNote(
         }
     })
 
-    MainScaffold(floatingIcon = Icons.Default.Check, floatingButtonClick = {
-        viewModel.saveNote()
+    MainScaffold(navigator = navigator,
+        floatingIcon = Icons.Default.Check, floatingButtonClick = {
+            viewModel.saveNote()
 
-    }, snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
+        },
+        snackBarHost = { SnackbarHost(hostState = snackBarState) }) { paddingValues ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(paddingValues)
-                .padding(10.dp),
+                .padding(10.dp)
         ) {
             Text(
                 text = "Title",
@@ -80,20 +85,20 @@ fun AddNote(
                 value = title,
                 onValueChange = { viewModel.onTitleChange(it) },
                 modifier = Modifier.fillMaxWidth(),
-                textStyle = MaterialTheme.typography.titleMedium,
                 singleLine = true,
-                placeholder = { Text(text = "Title Of Note") },
+                placeholder = { Text(text = stringResource(id = R.string.title_of_note)) },
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent
                 )
             )
 
-            Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
             Text(
-                text = "Detail About Note",
+                text = stringResource(R.string.detail_about_note),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 5.dp),
@@ -107,9 +112,8 @@ fun AddNote(
                 onValueChange = { viewModel.onContentChange(it) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(bottom = 10.dp),
-                placeholder = { Text(text = "Write here what u want to save.") },
+                    .wrapContentHeight(),
+                placeholder = { Text(text = stringResource(R.string.write_here_what_u_want_to_save)) },
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,

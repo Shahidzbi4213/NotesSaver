@@ -12,7 +12,7 @@ class BiometricAuthentication(
     private val repo: BiometricAuthenticatorRepo,
 ) {
 
-    suspend operator fun invoke(activity: AppCompatActivity) {
-        repo.initBiometricPrompt(activity)
+    suspend operator fun invoke(activity: AppCompatActivity, startState: Boolean) {
+        repo.initBiometricPrompt(activity, startState)
     }
 }

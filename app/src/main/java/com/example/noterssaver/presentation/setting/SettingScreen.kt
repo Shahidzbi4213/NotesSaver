@@ -31,7 +31,7 @@ fun SettingScreen(
 
     viewModel.updateTitle("Settings")
 
-    MainScaffold {
+    MainScaffold(navigator = navigator) {
         LazyColumn(
             modifier = modifier.padding(it),
             verticalArrangement = Arrangement.spacedBy(10.dp),

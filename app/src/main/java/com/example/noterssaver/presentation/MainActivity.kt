@@ -12,8 +12,12 @@ import com.example.noterssaver.presentation.authentication.AuthenticationViewMod
 import com.example.noterssaver.presentation.destinations.ShowNotesDestination
 import com.example.noterssaver.presentation.setting.SettingViewModel
 import com.example.noterssaver.presentation.setting.currentAppTheme
+import com.example.noterssaver.presentation.util.Extensions.debug
 import com.example.noterssaver.presentation.util.theme.ReplyTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.zip
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private val authViewModel by viewModel<AuthenticationViewModel>()
     private val settingViewModel by viewModel<SettingViewModel>()
     private var appLockState = false
+    private var startState = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,31 +41,39 @@ class MainActivity : AppCompatActivity() {
                 val authenticationState by authViewModel.biometricAuthenticationState.collectAsStateWithLifecycle()
 
                 LaunchedEffect(key1 = Unit) {
-                    authViewModel.startAuthentication(this@MainActivity)
-
                     settingViewModel.appLockState.collect {
                         appLockState = it
+
+                        if (appLockState) authViewModel.startAuthentication(this@MainActivity)
+
                     }
+
+
                 }
 
-                if (appLockState)
-                    when (authenticationState) {
-                        AuthState.Authenticated -> SetNavHost()
+                if (!startState) {
 
-                        AuthState.Authenticating -> {}
+                    if (appLockState)
+                        when (authenticationState) {
+                            AuthState.Authenticated -> SetNavHost()
 
-                        AuthState.AuthenticationFailed -> finishAffinity()
-                    }
-                else SetNavHost()
+                            AuthState.Authenticating -> {}
+
+                            AuthState.AuthenticationFailed -> finishAffinity()
+
+                        } else SetNavHost()
+                }
 
             }
         }
     }
 
     @Composable
-    private fun SetNavHost() = DestinationsNavHost(
-        navGraph = NavGraphs.root,
-        startRoute = ShowNotesDestination,
-    )
+    private fun SetNavHost() {
+        DestinationsNavHost(
+            navGraph = NavGraphs.root,
+            startRoute = ShowNotesDestination,
+        )
+    }
 
 }

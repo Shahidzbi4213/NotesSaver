@@ -45,8 +45,10 @@ fun ShowNotes(
     val notesList by viewModel.currentNotes.collectAsStateWithLifecycle()
     val searchText by viewModel.searchText.collectAsStateWithLifecycle()
     val lastDeletedNotes by viewModel.lastDeleteNote.collectAsStateWithLifecycle()
+
     val deleteState = viewModel.deleteState
     val copiedState = viewModel.copyClick
+
     val snackBarState = remember { SnackbarHostState() }
     val lazyListState = rememberLazyListState()
     val focusRequester = remember { FocusRequester() }
@@ -64,6 +66,7 @@ fun ShowNotes(
                 is NoteState.Error -> snackBarState.showSnackbar(
                     message = it.error.localizedMessage ?: "Something Went Wrong"
                 )
+
                 is NoteState.Success -> {
                     snackBarState.showSnackbar(message = it.success, actionLabel = "Undo").apply {
                         if (this == SnackbarResult.ActionPerformed) addNoteViewModel.saveNote(
@@ -82,6 +85,7 @@ fun ShowNotes(
     })
 
     MainScaffold(
+        navigator = navigator,
         floatingIcon = Icons.Default.Add,
         floatingButtonClick = { navigator.navigate(AddNoteDestination(null)) },
         snackBarHost = { SnackbarHost(hostState = snackBarState) },

@@ -28,7 +28,9 @@ import com.example.noterssaver.presentation.authentication.component.Information
 import com.example.noterssaver.presentation.setting.SettingViewModel
 import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
+import java.util.NavigableMap
 
 /*
  * Created by Shahid Iqbal on 4/7/2023.
@@ -37,6 +39,7 @@ import org.koin.androidx.compose.koinViewModel
 @Destination
 @Composable
 fun BiometricScreen(
+    navigator: DestinationsNavigator,
     settingViewModel: SettingViewModel = koinViewModel(),
     biometricViewModel: AuthenticationViewModel = koinViewModel(),
     mainViewModel: MainViewModel = koinViewModel()
@@ -49,7 +52,7 @@ fun BiometricScreen(
     }
     mainViewModel.updateTitle("Fingerprint Lock")
 
-    MainScaffold { paddingValues ->
+    MainScaffold(navigator = navigator) { paddingValues ->
 
         Card(
             modifier = Modifier
@@ -88,9 +91,9 @@ fun BiometricScreen(
                         if (appLockState) settingViewModel.updateAppLock(false)
                         else {
                             when (biometricState) {
-                                BiometricAuthResult.UserCanAuthenticate -> settingViewModel.updateAppLock(
-                                    true
-                                )
+                                BiometricAuthResult.UserCanAuthenticate -> {
+                                    settingViewModel.updateAppLock(true)
+                                }
 
                                 BiometricAuthResult.Empty -> Unit
                                 is BiometricAuthResult.Failure -> {

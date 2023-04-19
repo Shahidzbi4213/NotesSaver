@@ -15,4 +15,6 @@
     <string name="biometric_subtitle">Unlock Your Notes with Biometric</string>
     <string name="cancel">Cancel</string>
     <string name="biometric_description">Embrace the Future of Note-taking! Say Hello to Effortless Access with Biometric Authentication.Just Secure and Convenient Note-taking!</string>
+    <string name="write_here_what_u_want_to_save">Write here what u want to save.</string>
+    <string name="detail_about_note">Detail About Note</string>
 </resources>

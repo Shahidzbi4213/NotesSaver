@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace 'com.example.noterssaver'
-    compileSdkPreview "UpsideDownCake"
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.noterssaver"
         minSdk 26
-        targetSdkPreview "UpsideDownCake"
+        targetSdk 33
         versionCode 1
         versionName "1.0"
     }
@@ -22,6 +22,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            debuggable true
+            applicationIdSuffix ".debug"
         }
     }
     compileOptions {
@@ -53,7 +58,7 @@ dependencies {
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.compose.material3:material3:1.1.0-beta02'
-    implementation 'com.google.android.material:material:1.10.0-alpha01'
+    implementation 'com.google.android.material:material:1.8.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

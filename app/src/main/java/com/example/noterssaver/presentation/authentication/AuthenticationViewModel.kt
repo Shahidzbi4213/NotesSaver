@@ -33,7 +33,7 @@ class AuthenticationViewModel(
 
     fun startAuthentication(activity: AppCompatActivity) {
         viewModelScope.launch {
-            biometricUseCases.biometricAuthentication.invoke(activity)
+            biometricUseCases.biometricAuthentication.invoke(activity, isAuthenticatedStarted.value)
 
         }
     }

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface BiometricAuthenticatorRepo {
 
-    suspend fun initBiometricPrompt(context: AppCompatActivity)
+    suspend fun initBiometricPrompt(context: AppCompatActivity,startState: Boolean)
 
     fun authenticateState(): StateFlow<AuthState>
 

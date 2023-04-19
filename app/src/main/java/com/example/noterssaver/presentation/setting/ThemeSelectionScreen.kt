@@ -13,11 +13,13 @@ import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.setting.component.RadioOption
 import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
 @Destination
 @Composable
 fun ThemeScreen(
+    navigator: DestinationsNavigator,
     settingViewModel: SettingViewModel = koinViewModel(),
     mainViewModel: MainViewModel = koinViewModel()
 ) {
@@ -26,7 +28,7 @@ fun ThemeScreen(
     val themes = ThemeStyle.values().toList()
     val currentTheme by settingViewModel.currentThemeState.collectAsStateWithLifecycle(initialValue = ThemeStyle.LIGHT)
 
-    MainScaffold { paddingValues ->
+    MainScaffold(navigator = navigator) { paddingValues ->
         LazyColumn(
             contentPadding = PaddingValues(10.dp),
             modifier = Modifier.padding(paddingValues)
