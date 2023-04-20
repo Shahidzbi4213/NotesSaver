@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.noterssaver.R
-import com.example.noterssaver.framework.util.BiometricAuthResult
+import com.example.noterssaver.presentation.authentication.utils.BiometricExistsStatus
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.authentication.component.InformationDialog
 import com.example.noterssaver.presentation.setting.SettingViewModel
@@ -30,7 +30,6 @@ import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
-import java.util.NavigableMap
 
 /*
  * Created by Shahid Iqbal on 4/7/2023.
@@ -46,7 +45,8 @@ fun BiometricScreen(
 ) {
 
     val appLockState by settingViewModel.appLockState.collectAsStateWithLifecycle()
-    val biometricState = biometricViewModel.biometricAvailabilityState
+    val biometricState = biometricViewModel.isBiometricExistAndEnabled
+
     var showDialogFlag by remember {
         mutableStateOf(Pair(false, ""))
     }
@@ -89,19 +89,16 @@ fun BiometricScreen(
                     onCheckedChange = {
 
                         if (appLockState) settingViewModel.updateAppLock(false)
-                        else {
-                            when (biometricState) {
-                                BiometricAuthResult.UserCanAuthenticate -> {
-                                    settingViewModel.updateAppLock(true)
-                                }
-
-                                BiometricAuthResult.Empty -> Unit
-                                is BiometricAuthResult.Failure -> {
-                                    showDialogFlag = Pair(true, biometricState.errorMessage)
-                                }
-
+                        else when (biometricState) {
+                            BiometricExistsStatus.Empty -> Unit
+                            BiometricExistsStatus.DeviceBiometricEnabled -> settingViewModel.updateAppLock(
+                                true
+                            )
+                            is BiometricExistsStatus.Failure -> {
+                                showDialogFlag = Pair(true, biometricState.errorMessage)
                             }
                         }
+
 
                     }
                 )

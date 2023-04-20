@@ -1,4 +1,4 @@
-package com.example.noterssaver.framework.util;
+package com.example.noterssaver.presentation.authentication.utils;
 
 import android.content.Context
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG

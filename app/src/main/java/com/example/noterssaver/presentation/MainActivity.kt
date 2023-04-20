@@ -7,17 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.noterssaver.framework.authentication.AuthState
+import com.example.noterssaver.presentation.authentication.utils.AuthState
 import com.example.noterssaver.presentation.authentication.AuthenticationViewModel
 import com.example.noterssaver.presentation.destinations.ShowNotesDestination
 import com.example.noterssaver.presentation.setting.SettingViewModel
 import com.example.noterssaver.presentation.setting.currentAppTheme
-import com.example.noterssaver.presentation.util.Extensions.debug
 import com.example.noterssaver.presentation.util.theme.ReplyTheme
+import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.DestinationsNavHost
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.zip
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -36,15 +33,13 @@ class MainActivity : AppCompatActivity() {
 
 
         setContent {
-            ReplyTheme(dynamicColor = true, darkTheme = currentAppTheme()) {
+            ReplyTheme(dynamicColor = false, darkTheme = currentAppTheme()) {
 
-                val authenticationState by authViewModel.biometricAuthenticationState.collectAsStateWithLifecycle()
+                val authenticationState by authViewModel.authenticationState.collectAsStateWithLifecycle()
 
                 LaunchedEffect(key1 = Unit) {
                     settingViewModel.appLockState.collect {
                         appLockState = it
-
-                        if (appLockState) authViewModel.startAuthentication(this@MainActivity)
 
                     }
 
@@ -52,16 +47,17 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 if (!startState) {
-
-                    if (appLockState)
+                    if (appLockState) {
+                        authViewModel.startAuthentication(this@MainActivity)
                         when (authenticationState) {
                             AuthState.Authenticated -> SetNavHost()
 
-                            AuthState.Authenticating -> {}
+                            AuthState.Authenticating -> Unit
 
                             AuthState.AuthenticationFailed -> finishAffinity()
 
-                        } else SetNavHost()
+                        }
+                    } else SetNavHost()
                 }
 
             }
@@ -70,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     private fun SetNavHost() {
+
         DestinationsNavHost(
             navGraph = NavGraphs.root,
             startRoute = ShowNotesDestination,

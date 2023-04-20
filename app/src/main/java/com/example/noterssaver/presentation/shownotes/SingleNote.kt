@@ -22,15 +22,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.noterssaver.R
 import com.example.noterssaver.data.model.Note
+import com.example.noterssaver.presentation.destinations.AddNoteDestination
 import com.example.noterssaver.presentation.util.Extensions.formattedDate
 import com.example.noterssaver.presentation.util.Extensions.formattedTime
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SingleNoteItem(
     note: Note,
-    onEdit: () -> Unit,
+    navigator: DestinationsNavigator,
     viewModel: GetNotesViewModel = koinViewModel()
 ) {
     var isExpanded by remember {
@@ -95,7 +97,11 @@ fun SingleNoteItem(
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 IconButton(onClick = {
-                    onEdit.invoke()
+                    navigator.navigate(
+                        AddNoteDestination(
+                            note
+                        )
+                    )
                 }) {
                     Icon(
                         imageVector = Icons.Default.Edit, contentDescription = null

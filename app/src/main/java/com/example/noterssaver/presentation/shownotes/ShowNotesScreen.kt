@@ -3,6 +3,7 @@ package com.example.noterssaver.presentation.shownotes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -29,7 +30,6 @@ import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -47,13 +47,14 @@ fun ShowNotes(
     val lastDeletedNotes by viewModel.lastDeleteNote.collectAsStateWithLifecycle()
 
     val deleteState = viewModel.deleteState
-    val copiedState = viewModel.copyClick
+    val copiedState = viewModel.copyClickState
 
     val snackBarState = remember { SnackbarHostState() }
     val lazyListState = rememberLazyListState()
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty))
+
 
     LaunchedEffect(key1 = copiedState, key2 = deleteState, key3 = null, block = {
         if (copiedState) {
@@ -77,10 +78,6 @@ fun ShowNotes(
                     viewModel.updateDeleteState()
                 }
             }
-        }
-
-        snapshotFlow { lazyListState.firstVisibleItemIndex }.collectLatest { index ->
-            mainViewModel.updateScrollSate(index == 0)
         }
     })
 
@@ -119,13 +116,35 @@ fun ShowNotes(
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     state = lazyListState,
                 ) {
-                    items(items = notesList) {
-                        SingleNoteItem(note = it, onEdit = {
-                            navigator.navigate(AddNoteDestination(it))
-                        })
+                    items(items = notesList, key = { it.timestamp }) {
+                        SingleNoteItem(note = it, navigator)
                     }
                 }
             }
         }
     }
+
+    UpdateScrollState(mainViewModel, lazyListState)
+}
+
+/**
+ * Update the scroll state of the app based on the
+ * first visible item index of a LazyColumn composable
+using the derivedStateOf function.
+ * */
+
+@Composable
+private fun UpdateScrollState(
+    mainViewModel: MainViewModel,
+    lazyListState: LazyListState
+) {
+    remember {
+        derivedStateOf {
+            // This expression uses the lazyListState to determine the scroll state.
+            // It checks whether the first visible item is beyond the first item or not.
+            // If it is, then the scroll state is updated to indicate that the user is scrolling.
+            mainViewModel.updateScrollSate(lazyListState.firstVisibleItemIndex > 0)
+        }
+    }
+
 }

@@ -1,13 +1,16 @@
 package com.example.noterssaver.presentation.authentication
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.*
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.noterssaver.domain.usecase.authentication.BiometricUseCases
-import com.example.noterssaver.framework.util.BiometricAuthResult
+import com.example.noterssaver.presentation.authentication.utils.AuthState
+import com.example.noterssaver.presentation.authentication.utils.BiometricExistsStatus
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /*
@@ -15,31 +18,32 @@ import kotlinx.coroutines.launch
  */
 
 class AuthenticationViewModel(
-    private val biometricUseCases: BiometricUseCases,
+    private val biometricAuth: BiometricAuth,
 ) : ViewModel() {
 
-    var biometricAvailabilityState by mutableStateOf<BiometricAuthResult>(BiometricAuthResult.Empty)
-    var biometricAuthenticationState = biometricUseCases.biometricAuthenticationState.invoke()
+    private var _biometricAvailabilityState by
+        mutableStateOf<BiometricExistsStatus>(BiometricExistsStatus.Empty)
+    val isBiometricExistAndEnabled: BiometricExistsStatus get() = _biometricAvailabilityState
 
+    val authenticationState: StateFlow<AuthState> = biometricAuth.authenticationState
     private var _isAuthenticationStarted = MutableStateFlow(false)
-    val isAuthenticatedStarted get() = _isAuthenticationStarted.asStateFlow()
 
 
     init {
         viewModelScope.launch {
-            biometricAvailabilityState = biometricUseCases.biometricAvailability.invoke()
+            _biometricAvailabilityState = biometricAuth.userCanAuthenticate()
         }
     }
 
     fun startAuthentication(activity: AppCompatActivity) {
         viewModelScope.launch {
-            biometricUseCases.biometricAuthentication.invoke(activity, isAuthenticatedStarted.value)
+            biometricAuth.biometricAuthentication(
+                activity = activity,
+                isAuthStated = _isAuthenticationStarted.value
+            )
+            _isAuthenticationStarted.value = true
 
         }
-    }
-
-    fun updateAuthenticationStartState() = viewModelScope.launch {
-        _isAuthenticationStarted.value = true
     }
 
 }

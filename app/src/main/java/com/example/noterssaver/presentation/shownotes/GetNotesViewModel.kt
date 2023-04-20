@@ -22,7 +22,7 @@ class GetNotesViewModel(private val notesUseCases: NotesUseCases) : ViewModel() 
     private var _lastDeletedNote = MutableStateFlow<Note?>(null)
     val lastDeleteNote: StateFlow<Note?> get() = _lastDeletedNote
 
-    var copyClick by mutableStateOf(false)
+    var copyClickState by mutableStateOf(false)
         private set
 
     var searchText = MutableStateFlow("")
@@ -37,7 +37,7 @@ class GetNotesViewModel(private val notesUseCases: NotesUseCases) : ViewModel() 
     }
 
     fun onCopied(newState: Boolean) {
-        copyClick = newState
+        copyClickState = newState
     }
 
     fun updateDeleteState() {

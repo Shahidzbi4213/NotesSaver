@@ -1,5 +1,6 @@
 package com.example.noterssaver.presentation.view.component
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -53,7 +54,9 @@ fun MainScaffold(
 
         )
     }, snackbarHost = snackBarHost, floatingActionButton = {
-        if (isScrollUp) floatingIcon?.let { FloatingButton(icon = it) { floatingButtonClick.invoke() } }
+        AnimatedVisibility(visible = !isScrollUp) {
+            floatingIcon?.let { FloatingButton(icon = it) { floatingButtonClick.invoke() } }
+        }
     }, content = content)
 }
 
