@@ -4,7 +4,7 @@ import com.example.noterssaver.data.repository.NotesRepoImpl
 import com.example.noterssaver.data.source.local.AppDatabase
 import com.example.noterssaver.domain.repository.NotesRepo
 import com.example.noterssaver.domain.usecase.notes.AddNoteUseCase
-import com.example.noterssaver.domain.usecase.notes.ClearAllNotesUseCase
+import com.example.noterssaver.domain.usecase.notes.DeleteAllNotesUseCase
 import com.example.noterssaver.domain.usecase.notes.DeleteNoteUseCase
 import com.example.noterssaver.domain.usecase.notes.DeleteOldNotesUseCase
 import com.example.noterssaver.domain.usecase.notes.GetNotesUseCase
@@ -31,7 +31,7 @@ val notesModule = module {
             addNoteUseCase = AddNoteUseCase(get()),
             deleteNoteUseCase = DeleteNoteUseCase(get()),
             deleteOldNotesUseCase = DeleteOldNotesUseCase(get()),
-            clearAllNotesUseCase = ClearAllNotesUseCase(get())
+            deleteAllNotesUseCase = DeleteAllNotesUseCase(get())
         )
     }
 

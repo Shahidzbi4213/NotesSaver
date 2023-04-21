@@ -2,7 +2,7 @@ package com.example.noterssaver.data.source.local
 
 import androidx.room.*
 import com.example.noterssaver.data.model.Setting
-import com.example.noterssaver.presentation.setting.ThemeStyle
+import com.example.noterssaver.presentation.setting.util.ThemeStyle
 import kotlinx.coroutines.flow.Flow
 
 @Dao

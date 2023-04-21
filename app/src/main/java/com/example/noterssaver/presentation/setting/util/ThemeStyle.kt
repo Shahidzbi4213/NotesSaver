@@ -1,4 +1,4 @@
-package com.example.noterssaver.presentation.setting
+package com.example.noterssaver.presentation.setting.util
 
 enum class ThemeStyle {
     SYSTEM_DEFAULT, LIGHT, DARK

@@ -3,6 +3,8 @@ package com.example.noterssaver.presentation.setting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noterssaver.domain.usecase.settings.SettingUseCases
+import com.example.noterssaver.presentation.setting.util.ThemeStyle
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -33,5 +35,9 @@ class SettingViewModel(
 
     fun updateAppLock(value: Boolean) = viewModelScope.launch {
         useCases.updateAppLockerUseCase.invoke(value)
+    }
+
+    fun deleteAllNotes() = viewModelScope.launch(Dispatchers.IO) {
+        useCases.deleteAllNotesUseCase.invoke()
     }
 }

@@ -2,7 +2,7 @@ package com.example.noterssaver.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.noterssaver.presentation.setting.ThemeStyle
+import com.example.noterssaver.presentation.setting.util.ThemeStyle
 
 @Entity
 data class Setting(

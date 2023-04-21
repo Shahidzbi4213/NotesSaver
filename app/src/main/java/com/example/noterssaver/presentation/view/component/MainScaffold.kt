@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import com.example.noterssaver.presentation.MainViewModel
+import com.example.noterssaver.presentation.util.Extensions.debug
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
@@ -54,7 +55,11 @@ fun MainScaffold(
 
         )
     }, snackbarHost = snackBarHost, floatingActionButton = {
-        AnimatedVisibility(visible = !isScrollUp) {
+        val visible  = if (title == "Notes Saver")
+            !isScrollUp
+        else true
+
+        if (visible){
             floatingIcon?.let { FloatingButton(icon = it) { floatingButtonClick.invoke() } }
         }
     }, content = content)

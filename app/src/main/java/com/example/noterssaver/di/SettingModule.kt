@@ -27,7 +27,7 @@ val settingModule = module {
         SettingUseCases(
             updateAppLockerUseCase = UpdateAppLockUseCase(get()),
             updateThemeUseCase = UpdateThemeUseCase(get()),
-            clearAllUseCase = ClearAllUseCase(get()),
+            deleteAllNotesUseCase = ClearAllUseCase(get()),
             getCurrentThemeStatusUseCase = GetCurrentThemeStatusUseCase(get()),
             getAppLockStatusUseCase = GetAppLockStatusUseCase(get()),
             emptySettingUseCase = EmptySettingUseCase(get())

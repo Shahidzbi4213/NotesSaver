@@ -1,7 +1,7 @@
 package com.example.noterssaver.presentation.util
 
 import androidx.room.TypeConverter
-import com.example.noterssaver.presentation.setting.ThemeStyle
+import com.example.noterssaver.presentation.setting.util.ThemeStyle
 
 class ThemeStyleConverter {
 

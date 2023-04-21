@@ -1,4 +1,4 @@
-package com.example.noterssaver.presentation.setting
+package com.example.noterssaver.presentation.setting.model
 
 import androidx.annotation.DrawableRes
 import com.example.noterssaver.R

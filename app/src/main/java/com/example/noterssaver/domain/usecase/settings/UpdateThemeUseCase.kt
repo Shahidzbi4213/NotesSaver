@@ -1,7 +1,7 @@
 package com.example.noterssaver.domain.usecase.settings
 
 import com.example.noterssaver.domain.repository.SettingRepo
-import com.example.noterssaver.presentation.setting.ThemeStyle
+import com.example.noterssaver.presentation.setting.util.ThemeStyle
 
 class UpdateThemeUseCase(private val repo: SettingRepo) {
 

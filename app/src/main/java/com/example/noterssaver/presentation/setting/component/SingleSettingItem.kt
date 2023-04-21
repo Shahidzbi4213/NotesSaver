@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.noterssaver.presentation.setting.SettingOption
+import com.example.noterssaver.presentation.setting.model.SettingOption
 
 
 @OptIn(ExperimentalMaterial3Api::class)

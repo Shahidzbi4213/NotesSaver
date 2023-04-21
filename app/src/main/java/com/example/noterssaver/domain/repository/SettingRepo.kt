@@ -1,7 +1,7 @@
 package com.example.noterssaver.domain.repository
 
 import com.example.noterssaver.data.model.Setting
-import com.example.noterssaver.presentation.setting.ThemeStyle
+import com.example.noterssaver.presentation.setting.util.ThemeStyle
 import kotlinx.coroutines.flow.Flow
 
 interface SettingRepo {

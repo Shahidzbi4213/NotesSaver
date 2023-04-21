@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
@@ -24,6 +25,7 @@ import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.addnote.AddNoteViewModel
 import com.example.noterssaver.presentation.destinations.AddNoteDestination
 import com.example.noterssaver.presentation.destinations.SettingScreenDestination
+import com.example.noterssaver.presentation.util.Extensions.debug
 import com.example.noterssaver.presentation.util.Extensions.snackBar
 import com.example.noterssaver.presentation.util.NoteState
 import com.example.noterssaver.presentation.view.component.MainScaffold
@@ -55,8 +57,17 @@ fun ShowNotes(
     val focusManager = LocalFocusManager.current
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty))
 
+    val somethingWrong = stringResource(id = R.string.something_wrong)
 
-    LaunchedEffect(key1 = copiedState, key2 = deleteState, key3 = null, block = {
+    val canShowFloatButton by remember {
+        derivedStateOf { lazyListState.firstVisibleItemIndex > 0 }
+    }
+
+    LaunchedEffect(key1 = copiedState, key2 = deleteState, block = {
+
+        mainViewModel.updateScrollSate(false)
+
+
         if (copiedState) {
             snackBarState.snackBar("Copied to clipboard")
             viewModel.onCopied(false)
@@ -65,7 +76,7 @@ fun ShowNotes(
         deleteState?.let {
             when (it) {
                 is NoteState.Error -> snackBarState.showSnackbar(
-                    message = it.error.localizedMessage ?: "Something Went Wrong"
+                    message = it.error.localizedMessage ?: somethingWrong
                 )
 
                 is NoteState.Success -> {
@@ -93,7 +104,7 @@ fun ShowNotes(
             modifier.padding(paddingValues),
             iterations = LottieConstants.IterateForever
         )
-        else {
+        else
             Column(modifier = modifier
                 .fillMaxWidth()
                 .padding(paddingValues)
@@ -119,32 +130,13 @@ fun ShowNotes(
                     items(items = notesList, key = { it.timestamp }) {
                         SingleNoteItem(note = it, navigator)
                     }
+
                 }
+
             }
-        }
     }
 
-    UpdateScrollState(mainViewModel, lazyListState)
-}
-
-/**
- * Update the scroll state of the app based on the
- * first visible item index of a LazyColumn composable
-using the derivedStateOf function.
- * */
-
-@Composable
-private fun UpdateScrollState(
-    mainViewModel: MainViewModel,
-    lazyListState: LazyListState
-) {
-    remember {
-        derivedStateOf {
-            // This expression uses the lazyListState to determine the scroll state.
-            // It checks whether the first visible item is beyond the first item or not.
-            // If it is, then the scroll state is updated to indicate that the user is scrolling.
-            mainViewModel.updateScrollSate(lazyListState.firstVisibleItemIndex > 0)
-        }
-    }
+    mainViewModel.updateScrollSate(canShowFloatButton)
 
 }
+

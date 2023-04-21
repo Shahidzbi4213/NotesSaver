@@ -12,6 +12,7 @@ import com.example.noterssaver.presentation.authentication.AuthenticationViewMod
 import com.example.noterssaver.presentation.destinations.ShowNotesDestination
 import com.example.noterssaver.presentation.setting.SettingViewModel
 import com.example.noterssaver.presentation.setting.currentAppTheme
+import com.example.noterssaver.presentation.util.Extensions.debug
 import com.example.noterssaver.presentation.util.theme.ReplyTheme
 import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.DestinationsNavHost
@@ -40,14 +41,12 @@ class MainActivity : AppCompatActivity() {
                 LaunchedEffect(key1 = Unit) {
                     settingViewModel.appLockState.collect {
                         appLockState = it
-
                     }
-
-
                 }
 
                 if (!startState) {
                     if (appLockState) {
+                        ".is dal".debug()
                         authViewModel.startAuthentication(this@MainActivity)
                         when (authenticationState) {
                             AuthState.Authenticated -> SetNavHost()
