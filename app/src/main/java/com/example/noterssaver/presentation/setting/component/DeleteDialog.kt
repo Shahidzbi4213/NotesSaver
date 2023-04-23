@@ -36,17 +36,9 @@ fun DeleteDialog(
             Text(text = stringResource(R.string.can_not_undone))
         },
         confirmButton = {
-            TextButton(
-                onClick = onConfirm
-            ) {
-                Text(text = stringResource(R.string.delete), fontWeight = FontWeight.Bold)
-            }
+            TextButtonField(textId = R.string.delete) { onConfirm.invoke() }
         }, dismissButton = {
-            TextButton(
-                onClick = onCancel
-            ) {
-                Text(text = stringResource(id = R.string.cancel), fontWeight = FontWeight.Bold)
-            }
+            TextButtonField(textId = R.string.cancel) { onCancel.invoke() }
         },
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
     )

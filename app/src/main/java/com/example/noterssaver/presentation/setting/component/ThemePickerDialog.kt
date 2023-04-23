@@ -1,7 +1,6 @@
 package com.example.noterssaver.presentation.setting.component;
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
@@ -30,7 +28,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.noterssaver.R
 import com.example.noterssaver.presentation.setting.SettingViewModel
 import com.example.noterssaver.presentation.setting.util.ThemeStyle
@@ -106,18 +103,9 @@ fun ThemePickerDialog(
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                TextButton(
-                    onClick = onCancelRequest
-                ) {
-                    Text(text = stringResource(id = R.string.cancel), fontWeight = FontWeight.Bold)
-                }
-
+                TextButtonField(textId = R.string.cancel) { onCancelRequest.invoke() }
                 Spacer(modifier = Modifier.width(5.dp))
-
-                TextButton(onClick = { onConfirmRequest(selectedTheme) }) {
-                    Text(text = stringResource(id = R.string.ok), fontWeight = FontWeight.Bold)
-                }
-
+                TextButtonField(textId = R.string.ok) { onConfirmRequest.invoke(selectedTheme) }
             }
 
         }
