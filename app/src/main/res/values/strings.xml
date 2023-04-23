@@ -21,4 +21,5 @@
     <string name="confirmation">Confirmation</string>
     <string name="can_not_undone">Are you sure you want to proceed? This action cannot be undone.</string>
     <string name="delete">Delete</string>
+    <string name="ok">Ok</string>
 </resources>

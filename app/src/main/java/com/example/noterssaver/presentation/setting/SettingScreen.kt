@@ -1,6 +1,8 @@
 package com.example.noterssaver.presentation.setting
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.SnackbarHost
@@ -17,9 +19,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.noterssaver.R
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.destinations.BiometricScreenDestination
-import com.example.noterssaver.presentation.destinations.ThemeScreenDestination
 import com.example.noterssaver.presentation.setting.component.DeleteDialog
 import com.example.noterssaver.presentation.setting.component.SingleSettingItem
+import com.example.noterssaver.presentation.setting.component.ThemePickerDialog
 import com.example.noterssaver.presentation.setting.model.SettingOption
 import com.example.noterssaver.presentation.setting.util.ThemeStyle
 import com.example.noterssaver.presentation.util.Extensions.snackBar
@@ -41,10 +43,13 @@ fun SettingScreen(
     val currentTheme by settingViewModel.currentThemeState.collectAsStateWithLifecycle(initialValue = ThemeStyle.LIGHT)
     val snackBarState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-    var showDialog by remember {
+    var showDeleteDialog by remember {
         mutableStateOf(false)
     }
 
+    var showThemePickerDialog by remember {
+        mutableStateOf(false)
+    }
 
     viewModel.updateTitle("Settings")
 
@@ -61,7 +66,7 @@ fun SettingScreen(
                 SettingOption.SETTING_MENU,
                 key = { _: Int, item: SettingOption -> item.icon }) { index, option ->
                 val currentOption = if (index != 0) option else option.copy(
-                    icon = updateSettingOptionIconForTheme(
+                    icon = updateSettingIconForTheme(
                         currentTheme = currentTheme
                     )
                 )
@@ -70,10 +75,13 @@ fun SettingScreen(
 
                 ) {
                     when (index) {
-                        0 -> navigator.navigate(ThemeScreenDestination)
+                        0 -> {
+                            showThemePickerDialog = true
+                        }
+
                         1 -> navigator.navigate(BiometricScreenDestination)
                         3 -> {
-                            showDialog = true
+                            showDeleteDialog = true
                         }
                     }
                 }
@@ -81,26 +89,32 @@ fun SettingScreen(
         }
     }
 
-    if (showDialog)
-        DeleteDialog(
-            onDismissRequest = { showDialog = false },
-            onConfirm = {
-                settingViewModel.deleteAllNotes()
-                showDialog = false
-                scope.launch {
-                    snackBarState.snackBar("Notes Cleared")
-                }
-            },
-            onCancel = { showDialog = false })
+    if (showDeleteDialog) DeleteDialog(onDismissRequest = { showDeleteDialog = false },
+        onConfirm = {
+            settingViewModel.deleteAllNotes()
+            showDeleteDialog = false
+            scope.launch {
+                snackBarState.snackBar("Notes Cleared")
+            }
+        },
+        onCancel = { showDeleteDialog = false })
+
+    if (showThemePickerDialog) ThemePickerDialog(
+
+        onDismissRequest = { showThemePickerDialog = false },
+        onCancelRequest = { showThemePickerDialog = false },
+        onConfirmRequest = {
+            settingViewModel.updateTheme(it ?: ThemeStyle.LIGHT)
+            showThemePickerDialog = false
+        })
 }
 
-@Composable
-private fun updateSettingOptionIconForTheme(
+private fun updateSettingIconForTheme(
     currentTheme: ThemeStyle,
 ): Int {
     return when (currentTheme.ordinal) {
-        0 -> R.drawable.auto
-        2 -> R.drawable.dark
-        else -> R.drawable.light
+        0 -> R.drawable.light
+        1 -> R.drawable.dark
+        else -> R.drawable.auto
     }
 }

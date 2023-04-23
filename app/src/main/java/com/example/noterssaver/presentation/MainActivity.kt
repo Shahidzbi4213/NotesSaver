@@ -7,14 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.noterssaver.presentation.authentication.utils.AuthState
 import com.example.noterssaver.presentation.authentication.AuthenticationViewModel
+import com.example.noterssaver.presentation.authentication.utils.AuthState
 import com.example.noterssaver.presentation.destinations.ShowNotesDestination
 import com.example.noterssaver.presentation.setting.SettingViewModel
-import com.example.noterssaver.presentation.setting.currentAppTheme
-import com.example.noterssaver.presentation.util.Extensions.debug
+import com.example.noterssaver.presentation.setting.component.currentAppTheme
 import com.example.noterssaver.presentation.util.theme.ReplyTheme
-import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.DestinationsNavHost
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -46,7 +44,6 @@ class MainActivity : AppCompatActivity() {
 
                 if (!startState) {
                     if (appLockState) {
-                        ".is dal".debug()
                         authViewModel.startAuthentication(this@MainActivity)
                         when (authenticationState) {
                             AuthState.Authenticated -> SetNavHost()
