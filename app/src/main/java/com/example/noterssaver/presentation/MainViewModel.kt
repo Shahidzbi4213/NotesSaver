@@ -8,15 +8,8 @@ import com.example.noterssaver.presentation.util.Extensions.debug
 
 class MainViewModel : ViewModel() {
 
-    var isScrollUp: Boolean by mutableStateOf(true)
+    var isScrollUp: Boolean by mutableStateOf(false)
         private set
-
-    var topBarTitle by mutableStateOf("Notes Saver")
-        private set
-
-    fun updateTitle(newTitle: String) {
-        topBarTitle = newTitle
-    }
 
     fun updateScrollSate(newScrollState: Boolean) {
         isScrollUp = newScrollState

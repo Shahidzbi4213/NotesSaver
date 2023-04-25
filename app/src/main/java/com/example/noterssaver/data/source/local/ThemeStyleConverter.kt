@@ -1,4 +1,4 @@
-package com.example.noterssaver.presentation.util
+package com.example.noterssaver.data.source.local
 
 import androidx.room.TypeConverter
 import com.example.noterssaver.presentation.setting.util.ThemeStyle

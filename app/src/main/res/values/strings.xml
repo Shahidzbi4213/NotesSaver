@@ -22,4 +22,7 @@
     <string name="can_not_undone">Are you sure you want to proceed? This action cannot be undone.</string>
     <string name="delete">Delete</string>
     <string name="ok">Ok</string>
+    <string name="setting">Setting</string>
+    <string name="fingerprint_lock">Fingerprint Lock</string>
+    <string name="note_something_down">Note something down</string>
 </resources>

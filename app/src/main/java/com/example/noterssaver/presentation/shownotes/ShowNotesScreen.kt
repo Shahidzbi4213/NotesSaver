@@ -1,15 +1,23 @@
 package com.example.noterssaver.presentation.shownotes
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
@@ -23,12 +31,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.noterssaver.R
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.addnote.AddNoteViewModel
-import com.example.noterssaver.presentation.destinations.AddNoteDestination
-import com.example.noterssaver.presentation.destinations.SettingScreenDestination
-import com.example.noterssaver.presentation.util.Extensions.debug
 import com.example.noterssaver.presentation.util.Extensions.snackBar
 import com.example.noterssaver.presentation.util.NoteState
-import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -63,16 +67,17 @@ fun ShowNotes(
         derivedStateOf { lazyListState.firstVisibleItemIndex > 0 }
     }
 
-    LaunchedEffect(key1 = copiedState, key2 = deleteState, block = {
-
-        mainViewModel.updateScrollSate(false)
-
+    LaunchedEffect(key1 = copiedState) {
 
         if (copiedState) {
             snackBarState.snackBar("Copied to clipboard")
             viewModel.onCopied(false)
         }
-
+    }
+    LaunchedEffect(key1 = canShowFloatButton) {
+        mainViewModel.updateScrollSate(canShowFloatButton)
+    }
+    LaunchedEffect(key1 = deleteState) {
         deleteState?.let {
             when (it) {
                 is NoteState.Error -> snackBarState.showSnackbar(
@@ -90,53 +95,44 @@ fun ShowNotes(
                 }
             }
         }
-    })
+    }
 
-    MainScaffold(
-        navigator = navigator,
-        floatingIcon = Icons.Default.Add,
-        floatingButtonClick = { navigator.navigate(AddNoteDestination(null)) },
-        snackBarHost = { SnackbarHost(hostState = snackBarState) },
-        onSettingClick = { navigator.navigate(SettingScreenDestination) }) { paddingValues ->
-
-        if (notesList.isEmpty()) LottieAnimation(
+    if (notesList.isEmpty()) {
+        LottieAnimation(
             composition,
-            modifier.padding(paddingValues),
             iterations = LottieConstants.IterateForever
         )
-        else
-            Column(modifier = modifier
-                .fillMaxWidth()
-                .padding(paddingValues)
-                .clickable {
-                    focusManager.clearFocus()
-                })
-            {
-                Spacer(modifier = Modifier.height(10.dp))
+    } else {
+        Column(modifier = modifier
+            .fillMaxWidth()
+            .clickable {
+                focusManager.clearFocus()
+            })
+        {
+            Spacer(modifier = Modifier.height(10.dp))
 
-                Searchbar(
-                    searchText = searchText,
-                    focusRequester = focusRequester,
-                    onSearchTextChange = viewModel::onSearchTextChange
-                )
+            Searchbar(
+                searchText = searchText,
+                focusRequester = focusRequester,
+                onSearchTextChange = viewModel::onSearchTextChange
+            )
 
-                Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-                LazyColumn(
-                    contentPadding = PaddingValues(5.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    state = lazyListState,
-                ) {
-                    items(items = notesList, key = { it.timestamp }) {
-                        SingleNoteItem(note = it, navigator)
-                    }
-
+            LazyColumn(
+                contentPadding = PaddingValues(5.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                state = lazyListState,
+            ) {
+                items(items = notesList, key = { it.timestamp }) {
+                    SingleNoteItem(note = it, navigator)
                 }
 
             }
+
+        }
     }
 
-    mainViewModel.updateScrollSate(canShowFloatButton)
 
 }
 

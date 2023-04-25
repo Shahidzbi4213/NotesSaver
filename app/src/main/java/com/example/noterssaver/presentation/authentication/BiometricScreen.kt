@@ -22,13 +22,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.noterssaver.R
-import com.example.noterssaver.presentation.authentication.utils.BiometricExistsStatus
-import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.authentication.component.InformationDialog
+import com.example.noterssaver.presentation.authentication.utils.BiometricExistsStatus
 import com.example.noterssaver.presentation.setting.SettingViewModel
-import com.example.noterssaver.presentation.view.component.MainScaffold
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
 /*
@@ -38,10 +35,8 @@ import org.koin.androidx.compose.koinViewModel
 @Destination
 @Composable
 fun BiometricScreen(
-    navigator: DestinationsNavigator,
     settingViewModel: SettingViewModel = koinViewModel(),
-    biometricViewModel: AuthenticationViewModel = koinViewModel(),
-    mainViewModel: MainViewModel = koinViewModel()
+    biometricViewModel: AuthenticationViewModel = koinViewModel()
 ) {
 
     val appLockState by settingViewModel.appLockState.collectAsStateWithLifecycle()
@@ -50,61 +45,55 @@ fun BiometricScreen(
     var showDialogFlag by remember {
         mutableStateOf(Pair(false, ""))
     }
-    mainViewModel.updateTitle("Fingerprint Lock")
 
-    MainScaffold(navigator = navigator) { paddingValues ->
-
-        Card(
+    Card(
+        modifier = Modifier
+            .padding(5.dp)
+    ) {
+        Row(
             modifier = Modifier
-                .padding(paddingValues)
-                .padding(5.dp)
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 15.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 15.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
 
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                ) {
-                    Text(
-                        text = stringResource(R.string.unlock_with_fingerprint),
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.SemiBold
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                Text(
+                    text = stringResource(R.string.unlock_with_fingerprint),
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.SemiBold
+                    )
+                )
+                Text(
+                    text = stringResource(id = R.string.unlock_description),
+                    modifier = Modifier.padding(top = 2.dp)
+                )
+
+            }
+
+            Switch(
+                checked = appLockState,
+                onCheckedChange = {
+
+                    if (appLockState) settingViewModel.updateAppLock(false)
+                    else when (biometricState) {
+                        BiometricExistsStatus.Empty -> Unit
+                        BiometricExistsStatus.DeviceBiometricEnabled -> settingViewModel.updateAppLock(
+                            true
                         )
-                    )
-                    Text(
-                        text = stringResource(id = R.string.unlock_description),
-                        modifier = Modifier.padding(top = 2.dp)
-                    )
+                        is BiometricExistsStatus.Failure -> {
+                            showDialogFlag = Pair(true, biometricState.errorMessage)
+                        }
+                    }
+
 
                 }
-
-                Switch(
-                    checked = appLockState,
-                    onCheckedChange = {
-
-                        if (appLockState) settingViewModel.updateAppLock(false)
-                        else when (biometricState) {
-                            BiometricExistsStatus.Empty -> Unit
-                            BiometricExistsStatus.DeviceBiometricEnabled -> settingViewModel.updateAppLock(
-                                true
-                            )
-                            is BiometricExistsStatus.Failure -> {
-                                showDialogFlag = Pair(true, biometricState.errorMessage)
-                            }
-                        }
-
-
-                    }
-                )
-            }
+            )
         }
-
     }
 
     if (showDialogFlag.first) {
