@@ -12,6 +12,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -25,6 +27,7 @@ import com.example.noterssaver.data.model.Note
 import com.example.noterssaver.presentation.destinations.AddNoteDestination
 import com.example.noterssaver.presentation.util.Extensions.formattedDate
 import com.example.noterssaver.presentation.util.Extensions.formattedTime
+import com.example.noterssaver.presentation.view.component.CustomIconButton
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
@@ -96,34 +99,23 @@ fun SingleNoteItem(
             )
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                IconButton(onClick = {
-                    navigator.navigate(AddNoteDestination)
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Edit, contentDescription = null
-                    )
-                }
 
-                IconButton(onClick = {
-                    clipboardManager.setText(
-                        AnnotatedString("${note.title} \n ${note.content}")
-                    )
-                    viewModel.onCopied(true)
-                }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_copy),
-                        contentDescription = null
-                    )
-                }
+                CustomIconButton(icon = Icons.Default.Edit,
+                    onClick = { navigator.navigate(AddNoteDestination) })
 
-                IconButton(onClick = {
-                    viewModel.onDelete(note)
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Delete, contentDescription = null
-                    )
-                }
+                CustomIconButton(icon = R.drawable.ic_copy,
+                    onClick = {
+                        clipboardManager.setText(
+                            AnnotatedString("${note.title} \n ${note.content}")
+                        )
+                        viewModel.onCopied(true)
+                    })
+
+                CustomIconButton(
+                    icon = Icons.Default.Delete,
+                    onClick = { viewModel.onDelete(note = note) })
             }
         }
     }
 }
+

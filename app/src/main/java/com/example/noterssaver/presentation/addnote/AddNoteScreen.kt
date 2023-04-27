@@ -34,6 +34,7 @@ import com.example.noterssaver.presentation.util.Extensions.debug
 import com.example.noterssaver.presentation.util.Extensions.snackBar
 import com.example.noterssaver.presentation.util.NoteState
 import com.example.noterssaver.presentation.view.component.LocalSnackBarState
+import com.example.noterssaver.presentation.view.component.transparentTextFieldColors
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collectLatest
@@ -81,7 +82,7 @@ fun AddNote(
 
         TextField(
             value = title,
-            onValueChange = { viewModel.onTitleChange(it) },
+            onValueChange = viewModel::onTitleChange,
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             placeholder = {
@@ -92,7 +93,7 @@ fun AddNote(
                     )
                 )
             },
-            colors = textFieldColors(),
+            colors = transparentTextFieldColors(),
             textStyle = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold
             )
@@ -102,22 +103,14 @@ fun AddNote(
 
         TextField(
             value = content,
-            onValueChange = { viewModel.onContentChange(it) },
+            onValueChange = viewModel::onContentChange,
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .focusRequester(focusRequester),
             placeholder = { Text(text = stringResource(R.string.note_something_down)) },
-            colors = textFieldColors(),
+            colors = transparentTextFieldColors(),
             textStyle = MaterialTheme.typography.bodyLarge,
         )
     }
 }
-
-@Composable
-private fun textFieldColors() = TextFieldDefaults.colors(
-    focusedIndicatorColor = Color.Transparent,
-    unfocusedIndicatorColor = Color.Transparent,
-    focusedContainerColor = Color.Transparent,
-    unfocusedContainerColor = Color.Transparent
-)
