@@ -8,10 +8,21 @@ import com.example.noterssaver.presentation.util.Extensions.debug
 
 class MainViewModel : ViewModel() {
 
+
     var isScrollUp: Boolean by mutableStateOf(false)
         private set
+
+     var onSaveClick by mutableStateOf(false)
+        private set
+
 
     fun updateScrollSate(newScrollState: Boolean) {
         isScrollUp = newScrollState
     }
+
+    fun updateSaveClickSate() {
+      onSaveClick = !onSaveClick
+    }
+
+
 }

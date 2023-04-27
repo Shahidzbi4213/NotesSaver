@@ -5,13 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,6 +31,7 @@ import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.addnote.AddNoteViewModel
 import com.example.noterssaver.presentation.util.Extensions.snackBar
 import com.example.noterssaver.presentation.util.NoteState
+import com.example.noterssaver.presentation.view.component.LocalSnackBarState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -55,10 +54,10 @@ fun ShowNotes(
     val deleteState = viewModel.deleteState
     val copiedState = viewModel.copyClickState
 
-    val snackBarState = remember { SnackbarHostState() }
+    val snackBarState = LocalSnackBarState.current
+    val focusManager = LocalFocusManager.current
     val lazyListState = rememberLazyListState()
     val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty))
 
     val somethingWrong = stringResource(id = R.string.something_wrong)
@@ -102,7 +101,8 @@ fun ShowNotes(
             composition,
             iterations = LottieConstants.IterateForever
         )
-    } else {
+    }
+    else {
         Column(modifier = modifier
             .fillMaxWidth()
             .clickable {
@@ -132,7 +132,6 @@ fun ShowNotes(
 
         }
     }
-
 
 }
 

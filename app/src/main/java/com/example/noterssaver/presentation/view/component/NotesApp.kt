@@ -5,8 +5,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.noterssaver.presentation.NavGraphs
 import com.example.noterssaver.presentation.destinations.ShowNotesDestination
@@ -17,24 +21,24 @@ import com.ramcosta.composedestinations.DestinationsNavHost
  */
 
 @Composable
-fun NotesApp(isScrollUp: Boolean) {
+fun NotesApp() {
     val navController = rememberNavController()
-    val snackHostState = remember { SnackbarHostState() }
+    val snackBarState = remember { SnackbarHostState() }
 
-    Scaffold(topBar = { TopAppBar(navController = navController) },
-        snackbarHost = { SnackbarHost(hostState = snackHostState) },
-        floatingActionButton = {
-            FloatingButton(
-                navController = navController, isScrollUp
+
+    CompositionLocalProvider(
+        LocalSnackBarState provides snackBarState
+    ) {
+        Scaffold(
+            topBar = { TopAppBar(navController = navController) },
+            snackbarHost = { SnackbarHost(hostState = snackBarState) },
+            floatingActionButton = { FloatingButton(navController = navController) }) {
+            DestinationsNavHost(
+                navGraph = NavGraphs.root,
+                startRoute = ShowNotesDestination,
+                modifier = Modifier.padding(it),
+                navController = navController
             )
         }
-    ) {
-
-        DestinationsNavHost(
-            navGraph = NavGraphs.root,
-            startRoute = ShowNotesDestination,
-            navController = navController,
-            modifier = Modifier.padding(it)
-        )
     }
 }

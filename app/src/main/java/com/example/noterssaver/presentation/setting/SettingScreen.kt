@@ -22,6 +22,7 @@ import com.example.noterssaver.presentation.setting.component.ThemePickerDialog
 import com.example.noterssaver.presentation.setting.model.SettingOption
 import com.example.noterssaver.presentation.setting.util.ThemeStyle
 import com.example.noterssaver.presentation.util.Extensions.snackBar
+import com.example.noterssaver.presentation.view.component.LocalSnackBarState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -36,7 +37,7 @@ fun SettingScreen(
 ) {
 
     val currentTheme by settingViewModel.currentThemeState.collectAsStateWithLifecycle(initialValue = ThemeStyle.LIGHT)
-    val snackBarState = remember { SnackbarHostState() }
+    val snackBarState = LocalSnackBarState.current
     val scope = rememberCoroutineScope()
     var showDeleteDialog by remember {
         mutableStateOf(false)

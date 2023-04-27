@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
 
     private val authViewModel by viewModel<AuthenticationViewModel>()
     private val settingViewModel by viewModel<SettingViewModel>()
-    private val mainViewModel by viewModels<MainViewModel>()
     private var appLockState = false
     private var startState = false
 
@@ -46,14 +45,14 @@ class MainActivity : AppCompatActivity() {
                     if (appLockState) {
                         authViewModel.startAuthentication(this@MainActivity)
                         when (authenticationState) {
-                            AuthState.Authenticated -> NotesApp(mainViewModel.isScrollUp)
+                            AuthState.Authenticated -> NotesApp()
 
                             AuthState.Authenticating -> Unit
 
                             AuthState.AuthenticationFailed -> finishAffinity()
 
                         }
-                    } else NotesApp(mainViewModel.isScrollUp)
+                    } else NotesApp()
                 }
 
             }

@@ -97,11 +97,7 @@ fun SingleNoteItem(
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 IconButton(onClick = {
-                    navigator.navigate(
-                        AddNoteDestination(
-                            note
-                        )
-                    )
+                    navigator.navigate(AddNoteDestination)
                 }) {
                     Icon(
                         imageVector = Icons.Default.Edit, contentDescription = null
