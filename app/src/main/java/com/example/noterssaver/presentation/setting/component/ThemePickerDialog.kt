@@ -14,7 +14,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -31,6 +29,8 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.noterssaver.R
 import com.example.noterssaver.presentation.setting.SettingViewModel
 import com.example.noterssaver.presentation.setting.util.ThemeStyle
+import com.example.noterssaver.presentation.view.component.TextButtonField
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
@@ -40,7 +40,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ThemePickerDialog(
-    settingViewModel: SettingViewModel = koinViewModel(),
+     currentThemeState:StateFlow<ThemeStyle>,
     onDismissRequest: () -> Unit,
     onCancelRequest: () -> Unit,
     onConfirmRequest: (ThemeStyle?) -> Unit
@@ -52,7 +52,7 @@ fun ThemePickerDialog(
     }
 
     LaunchedEffect(key1 = Unit) {
-        settingViewModel.currentThemeState.collectLatest {
+        currentThemeState.collectLatest {
             selectedTheme = it
         }
     }

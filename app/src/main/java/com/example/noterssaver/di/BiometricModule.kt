@@ -7,6 +7,7 @@ import org.koin.dsl.module
 
 val biometricModule = module {
 
+
     single { BiometricAuth(get()) }
     viewModel { AuthenticationViewModel(get()) }
 }

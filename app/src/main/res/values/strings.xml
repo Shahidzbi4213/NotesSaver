@@ -3,7 +3,7 @@
     <string name="unlock_description"> when enabled, you\'ll need to use fingerprint to open Notes Saver.</string>
     <string name="not_available">No biometric features available on this device.</string>
     <string name="currently_unavailable">Biometric features are currently unavailable.</string>
-    <string name="setup_fingerprint">To use this feature, you\'ll need to setup fingerprint on you device first.</string>
+    <string name="setup_fingerprint">To use this feature, you\'ll need to setup fingerprint on your device first.</string>
     <string name="something_wrong">Something went wrong</string>
     <string name="detail_of_note">Detail About Note</string>
     <string name="write_to_save">Write here what u want to save.</string>

@@ -10,7 +10,8 @@ import androidx.compose.ui.window.DialogProperties
 
 @Composable
 fun InformationDialog(
-    message: String, onDismissRequest: () -> Unit,
+    message: String,
+    onDismissRequest: () -> Unit,
     onConfirmClick: () -> Unit
 ) {
     AlertDialog(

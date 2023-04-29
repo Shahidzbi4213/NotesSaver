@@ -92,6 +92,7 @@ fun SettingScreen(
 
     if (showThemePickerDialog) ThemePickerDialog(
 
+        currentThemeState = settingViewModel.currentThemeState,
         onDismissRequest = { showThemePickerDialog = false },
         onCancelRequest = { showThemePickerDialog = false },
         onConfirmRequest = {

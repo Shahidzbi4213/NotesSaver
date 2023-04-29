@@ -9,7 +9,7 @@ import com.example.noterssaver.presentation.setting.util.ThemeStyle
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun currentAppTheme(vm: SettingViewModel = koinViewModel()): Boolean {
+fun currentAppTheme(vm: SettingViewModel): Boolean {
     val theme by vm.currentThemeState.collectAsState(ThemeStyle.LIGHT)
     return theme.let {
         when (it) {

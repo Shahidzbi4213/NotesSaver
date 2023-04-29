@@ -9,12 +9,12 @@ import java.util.concurrent.TimeUnit
 
 object DeleteWorkScheduler {
 
-    private val deleteRequest = PeriodicWorkRequestBuilder<DeleteNotesWorker>(1, TimeUnit.DAYS)
+    private val deleteRequest = PeriodicWorkRequestBuilder<DeleteNotesWorker>(7, TimeUnit.DAYS)
         .setInitialDelay(5, TimeUnit.MINUTES)
         .build()
 
-    fun Context.doWork() {
-        WorkManager.getInstance(this)
+    fun doWork(context: Context) {
+        WorkManager.getInstance(context)
             .enqueueUniquePeriodicWork(
                 "Delete Notes",
                 ExistingPeriodicWorkPolicy.KEEP,

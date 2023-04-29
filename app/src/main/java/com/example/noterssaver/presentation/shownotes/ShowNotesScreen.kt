@@ -29,6 +29,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.noterssaver.R
 import com.example.noterssaver.presentation.MainViewModel
 import com.example.noterssaver.presentation.addnote.AddNoteViewModel
+import com.example.noterssaver.presentation.destinations.AddNoteDestination
 import com.example.noterssaver.presentation.util.Extensions.snackBar
 import com.example.noterssaver.presentation.util.NoteState
 import com.example.noterssaver.presentation.view.component.LocalSnackBarState
@@ -45,7 +46,7 @@ fun ShowNotes(
     navigator: DestinationsNavigator,
     viewModel: GetNotesViewModel = koinViewModel(),
     addNoteViewModel: AddNoteViewModel = koinViewModel(),
-    mainViewModel: MainViewModel = koinViewModel(),
+    mainViewModel: MainViewModel
 ) {
     val notesList by viewModel.currentNotes.collectAsStateWithLifecycle()
     val searchText by viewModel.searchText.collectAsStateWithLifecycle()
@@ -85,9 +86,10 @@ fun ShowNotes(
 
                 is NoteState.Success -> {
                     snackBarState.showSnackbar(message = it.success, actionLabel = "Undo").apply {
-                        if (this == SnackbarResult.ActionPerformed) addNoteViewModel.saveNote(
+                        if (this == SnackbarResult.ActionPerformed) TODO()
+                          /*  addNoteViewModel.saveNote(
                             lastDeletedNotes
-                        )
+                        )*/
 
                     }
                     viewModel.updateDeleteState()
@@ -101,8 +103,7 @@ fun ShowNotes(
             composition,
             iterations = LottieConstants.IterateForever
         )
-    }
-    else {
+    } else {
         Column(modifier = modifier
             .fillMaxWidth()
             .clickable {
@@ -125,7 +126,14 @@ fun ShowNotes(
                 state = lazyListState,
             ) {
                 items(items = notesList, key = { it.timestamp }) {
-                    SingleNoteItem(note = it, navigator)
+                    SingleNoteItem(
+                        note = it,
+                        onEdit = {
+                            mainViewModel.updateCurrentEditableNote(it)
+                            navigator.navigate(AddNoteDestination)
+                        },
+                        onDelete = { viewModel.onDelete(it) },
+                        onCopied = { viewModel.onCopied(true) })
                 }
 
             }

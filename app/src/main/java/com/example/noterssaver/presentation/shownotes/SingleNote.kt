@@ -35,8 +35,10 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SingleNoteItem(
     note: Note,
-    navigator: DestinationsNavigator,
-    viewModel: GetNotesViewModel = koinViewModel()
+    onEdit: () -> Unit,
+    onDelete: () -> Unit,
+    onCopied: (Boolean) -> Unit
+
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
@@ -100,20 +102,24 @@ fun SingleNoteItem(
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
 
-                CustomIconButton(icon = Icons.Default.Edit,
-                    onClick = { navigator.navigate(AddNoteDestination) })
+                CustomIconButton(
+                    icon = Icons.Default.Edit,
+                    onClick = onEdit
+                )
 
                 CustomIconButton(icon = R.drawable.ic_copy,
                     onClick = {
                         clipboardManager.setText(
                             AnnotatedString("${note.title} \n ${note.content}")
                         )
-                        viewModel.onCopied(true)
+
+                        onCopied(true)
                     })
 
                 CustomIconButton(
                     icon = Icons.Default.Delete,
-                    onClick = { viewModel.onDelete(note = note) })
+                    onClick = onDelete
+                )
             }
         }
     }

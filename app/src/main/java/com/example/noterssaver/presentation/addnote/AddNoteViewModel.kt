@@ -17,20 +17,25 @@ class AddNoteViewModel(private val notesUseCases: NotesUseCases) : ViewModel() {
     var addEditState by mutableStateOf<NoteState?>(null)
         private set
 
-    var currentNoteToEdit by mutableStateOf<Note?>(null)
-        private set
-
     var title by mutableStateOf("")
         private set
 
     var content by mutableStateOf("")
         private set
 
+    private var editableNote:Note? = null
+
 
     fun onEvent(event: NotesEvent) {
         when (event) {
             is NotesEvent.NoEvent -> Unit
-           is NotesEvent.SaveNote -> saveNote()
+            is NotesEvent.SaveNote -> saveNote(null)
+            is NotesEvent.EditNote -> {
+                event.note.apply {
+                    onTitleChange(title)
+                    onContentChange(content)
+                }
+            }
 
         }
     }
@@ -43,16 +48,13 @@ class AddNoteViewModel(private val notesUseCases: NotesUseCases) : ViewModel() {
         content = newContent
     }
 
-    fun updateCurrentEditableNote(note: Note) {
-        currentNoteToEdit = note
-    }
+    private fun saveNote(editableNote: Note?) {
 
-    fun saveNote(currentNote: Note? = null) {
         viewModelScope.launch {
-            val note = currentNote ?: Note(
+            val note = editableNote ?: Note(
                 title = title,
                 content = content,
-                timestamp = System.currentTimeMillis()
+                timestamp = System.currentTimeMillis(),
             )
 
             addEditState = try {

@@ -1,4 +1,4 @@
-package com.example.noterssaver.presentation.setting.component;
+package com.example.noterssaver.presentation.view.component
 
 import androidx.annotation.StringRes
 import androidx.compose.material3.Text

@@ -3,14 +3,13 @@ package com.example.noterssaver.presentation.setting.component;
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.noterssaver.R
+import com.example.noterssaver.presentation.view.component.TextButtonField
 
 /*
  * Created by Shahid Iqbal on 4/21/2023.

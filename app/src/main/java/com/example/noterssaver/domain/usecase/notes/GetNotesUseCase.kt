@@ -15,7 +15,9 @@ class GetNotesUseCase(private val notesRepo: NotesRepo) {
     ): Flow<List<Note>> {
         return notesRepo.getNotes().combine(searchFlow) { notes, search ->
             if (search.isBlank()) notes
-            else notes.filter { it.title.contains(search, true) }
+            else notes.filter {
+                it.title.contains(search, true) || it.content.contains(search, true)
+            }
         }.map {
             when (orderType) {
                 OrderType.ASCENDING -> it

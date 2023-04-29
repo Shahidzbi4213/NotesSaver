@@ -36,7 +36,7 @@ class MyApp : Application(), KoinComponent {
         }
 
         //Deleting Notes Worker
-        this.doWork()
+        doWork(context = this)
 
     }
 
