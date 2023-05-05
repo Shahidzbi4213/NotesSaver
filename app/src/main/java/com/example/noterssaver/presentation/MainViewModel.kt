@@ -5,27 +5,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.noterssaver.data.model.Note
+import com.example.noterssaver.presentation.util.Extensions.debug
+import com.example.noterssaver.presentation.util.MainStates
 
 class MainViewModel : ViewModel() {
 
-    var isScrollUp: Boolean by mutableStateOf(false)
-        private set
-
-    var onSaveClick: Boolean by mutableStateOf(false)
-        private set
-
-    var editableNote: Note? by mutableStateOf(null)
+    var mainStates: MainStates by mutableStateOf(MainStates())
         private set
 
     fun updateCurrentEditableNote(note: Note) {
-        editableNote = note
+        mainStates = mainStates.copy(currentEditableNote = note)
     }
 
     fun updateScrollSate(newScrollState: Boolean) {
-        isScrollUp = newScrollState
+        mainStates = MainStates(isScrollUp = newScrollState)
     }
 
     fun clickForSaveNote(updateValue: Boolean) {
-        onSaveClick = updateValue
+        mainStates = MainStates(onSaveClick = updateValue)
     }
 }
+

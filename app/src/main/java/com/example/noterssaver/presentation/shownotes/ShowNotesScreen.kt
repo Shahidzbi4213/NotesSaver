@@ -15,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
@@ -27,8 +29,8 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.noterssaver.R
+import com.example.noterssaver.data.model.Note
 import com.example.noterssaver.presentation.MainViewModel
-import com.example.noterssaver.presentation.addnote.AddNoteViewModel
 import com.example.noterssaver.presentation.destinations.AddNoteDestination
 import com.example.noterssaver.presentation.util.Extensions.snackBar
 import com.example.noterssaver.presentation.util.NoteState
@@ -45,12 +47,14 @@ fun ShowNotes(
     modifier: Modifier = Modifier,
     navigator: DestinationsNavigator,
     viewModel: GetNotesViewModel = koinViewModel(),
-    addNoteViewModel: AddNoteViewModel = koinViewModel(),
     mainViewModel: MainViewModel
 ) {
     val notesList by viewModel.currentNotes.collectAsStateWithLifecycle()
     val searchText by viewModel.searchText.collectAsStateWithLifecycle()
-    val lastDeletedNotes by viewModel.lastDeleteNote.collectAsStateWithLifecycle()
+
+    var lastDeletedNote by remember {
+        mutableStateOf<Note?>(null)
+    }
 
     val deleteState = viewModel.deleteState
     val copiedState = viewModel.copyClickState
@@ -80,16 +84,19 @@ fun ShowNotes(
     LaunchedEffect(key1 = deleteState) {
         deleteState?.let {
             when (it) {
-                is NoteState.Error -> snackBarState.showSnackbar(
-                    message = it.error.localizedMessage ?: somethingWrong
-                )
+                is NoteState.Error -> {
+                    snackBarState.showSnackbar(
+                        message = it.error.localizedMessage ?: somethingWrong
+                    )
+                    viewModel.updateDeleteState()
+                }
 
                 is NoteState.Success -> {
                     snackBarState.showSnackbar(message = it.success, actionLabel = "Undo").apply {
-                        if (this == SnackbarResult.ActionPerformed) TODO()
-                          /*  addNoteViewModel.saveNote(
-                            lastDeletedNotes
-                        )*/
+                        if (this == SnackbarResult.ActionPerformed) {
+                            viewModel.saveOnUndo(lastDeletedNote!!)
+                            lastDeletedNote = null
+                        }
 
                     }
                     viewModel.updateDeleteState()
@@ -103,7 +110,8 @@ fun ShowNotes(
             composition,
             iterations = LottieConstants.IterateForever
         )
-    } else {
+    }
+    else {
         Column(modifier = modifier
             .fillMaxWidth()
             .clickable {
@@ -132,7 +140,10 @@ fun ShowNotes(
                             mainViewModel.updateCurrentEditableNote(it)
                             navigator.navigate(AddNoteDestination)
                         },
-                        onDelete = { viewModel.onDelete(it) },
+                        onDelete = {
+                            lastDeletedNote = it
+                            viewModel.onDelete(it)
+                        },
                         onCopied = { viewModel.onCopied(true) })
                 }
 

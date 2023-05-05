@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RadioOption(
+fun OptionRadioButton(
     modifier: Modifier = Modifier,
     title: String,
     selected: Boolean,

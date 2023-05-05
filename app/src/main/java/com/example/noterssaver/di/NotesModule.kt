@@ -27,7 +27,7 @@ val notesModule = module {
 
     single {
         NotesUseCases(
-            getNotesUseCase = GetNotesUseCase(get()),
+            getNotesUseCase = GetNotesUseCase(get(), get()),
             addNoteUseCase = AddNoteUseCase(get()),
             deleteNoteUseCase = DeleteNoteUseCase(get()),
             deleteOldNotesUseCase = DeleteOldNotesUseCase(get()),

@@ -14,8 +14,10 @@ import kotlinx.coroutines.launch
 
 class AddNoteViewModel(private val notesUseCases: NotesUseCases) : ViewModel() {
 
+
     var addEditState by mutableStateOf<NoteState?>(null)
         private set
+
 
     var title by mutableStateOf("")
         private set
@@ -23,20 +25,19 @@ class AddNoteViewModel(private val notesUseCases: NotesUseCases) : ViewModel() {
     var content by mutableStateOf("")
         private set
 
-    private var editableNote:Note? = null
 
+    private var currentNoteId: Int? = null
+    private var lastDeleteNote: Note? = null
 
     fun onEvent(event: NotesEvent) {
         when (event) {
             is NotesEvent.NoEvent -> Unit
-            is NotesEvent.SaveNote -> saveNote(null)
-            is NotesEvent.EditNote -> {
-                event.note.apply {
-                    onTitleChange(title)
-                    onContentChange(content)
-                }
+            is NotesEvent.SaveNote ->  saveNote()
+            is NotesEvent.EditNote -> event.note.apply {
+                currentNoteId = id
+                onTitleChange(title)
+                onContentChange(content)
             }
-
         }
     }
 
@@ -48,13 +49,14 @@ class AddNoteViewModel(private val notesUseCases: NotesUseCases) : ViewModel() {
         content = newContent
     }
 
-    private fun saveNote(editableNote: Note?) {
+    private fun saveNote() {
 
         viewModelScope.launch {
-            val note = editableNote ?: Note(
+            val note = lastDeleteNote ?: Note(
                 title = title,
                 content = content,
                 timestamp = System.currentTimeMillis(),
+                id = currentNoteId
             )
 
             addEditState = try {

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.noterssaver.R
 import com.example.noterssaver.presentation.MainViewModel
+import com.example.noterssaver.presentation.util.Extensions.debug
 import com.example.noterssaver.presentation.util.Extensions.snackBar
 import com.example.noterssaver.presentation.util.NoteState
 import com.example.noterssaver.presentation.view.component.LocalSnackBarState
@@ -35,22 +37,28 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 @Destination
 fun AddNote(
-    vm: MainViewModel,
     navigator: DestinationsNavigator,
+    mainViewModel: MainViewModel,
     viewModel: AddNoteViewModel = koinViewModel()
 ) {
 
     val snackBarState = LocalSnackBarState.current
     val focusRequester = remember { FocusRequester() }
 
-    val onSave = vm.onSaveClick
 
     val currentNoteState = viewModel.addEditState
     val title = viewModel.title
     val content = viewModel.content
 
 
-    SideEffects(focusRequester, currentNoteState, vm, snackBarState, navigator, onSave, viewModel)
+    SideEffects(
+        focusRequester,
+        currentNoteState,
+        snackBarState,
+        navigator,
+        viewModel,
+        mainViewModel
+    )
 
 
     Column(
@@ -104,39 +112,36 @@ fun AddNote(
 private fun SideEffects(
     focusRequester: FocusRequester,
     currentNoteState: NoteState?,
-    vm: MainViewModel,
     snackBarState: SnackbarHostState,
     navigator: DestinationsNavigator,
-    onSave: Boolean,
-    viewModel: AddNoteViewModel
+    viewModel: AddNoteViewModel,
+    vm: MainViewModel
 ) {
+
+    val onSave = vm.mainStates.onSaveClick
+    val currentEditableNote = vm.mainStates.currentEditableNote
+
+
     LaunchedEffect(key1 = Unit) {
         focusRequester.requestFocus()
     }
-
-    LaunchedEffect(key1 = currentNoteState, block = {
-
-        vm.clickForSaveNote(updateValue = false)
-
+    LaunchedEffect(key1 = currentNoteState){
         when (currentNoteState) {
             is NoteState.Error -> snackBarState.snackBar(currentNoteState.error.message!!)
-            is NoteState.Success -> {
-                navigator.navigateUp()
-            }
-
+            is NoteState.Success -> navigator.navigateUp()
             else -> Unit
         }
-    })
+        vm.clickForSaveNote(false)
+    }
 
-    LaunchedEffect(key1 = onSave, block = {
+    LaunchedEffect(key1 = onSave){
         if (onSave)
             viewModel.onEvent(NotesEvent.SaveNote)
+    }
 
-    })
+    LaunchedEffect(key1 = currentEditableNote){
+        if (currentEditableNote != null)
+            viewModel.onEvent(NotesEvent.EditNote(currentEditableNote))
+    }
 
-    LaunchedEffect(key1 = vm.editableNote, block = {
-        if (vm.editableNote != null) {
-            viewModel.onEvent(NotesEvent.EditNote(vm.editableNote!!))
-        }
-    })
 }

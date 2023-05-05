@@ -3,10 +3,12 @@ package com.example.noterssaver.data.repository
 import com.example.noterssaver.data.source.local.SettingDao
 import com.example.noterssaver.data.model.Setting
 import com.example.noterssaver.domain.repository.SettingRepo
+import com.example.noterssaver.presentation.setting.util.OrderType
 import com.example.noterssaver.presentation.setting.util.ThemeStyle
 import kotlinx.coroutines.flow.Flow
 
 class SettingRepoImpl(private val dao: SettingDao) : SettingRepo {
+
     override suspend fun insertEmpty(setting: Setting) {
         dao.insertEmpty(setting)
     }
@@ -19,21 +21,10 @@ class SettingRepoImpl(private val dao: SettingDao) : SettingRepo {
         dao.updateAppLockStatus(value)
     }
 
-    override suspend fun updatePassword(newPass: String) {
-        dao.updatePassword(newPass)
+    override suspend fun updateSortingOrder(orderType: OrderType) {
+        dao.updateSortingType(order = orderType)
     }
 
-    override suspend fun updateHint(newHint: String) {
-        dao.updateHint(newHint)
-    }
-
-    override fun getCurrentPassword(): Flow<String> {
-        return dao.getCurrentPassword()
-    }
-
-    override fun getCurrentHint(): Flow<String> {
-        return dao.getCurrentHint()
-    }
 
     override fun getCurrentTheme(): Flow<ThemeStyle> {
         return dao.getCurrentTheme()
@@ -41,5 +32,9 @@ class SettingRepoImpl(private val dao: SettingDao) : SettingRepo {
 
     override fun getAppLockStatus(): Flow<Boolean> {
         return dao.getAppLockStatus()
+    }
+
+    override fun getCurrentSortingOrder(): Flow<OrderType> {
+        return dao.getCurrentSortingOrder()
     }
 }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NotesDao {
 
-    @Query("Select * from note order by timestamp")
+    @Query("Select * from note")
     fun getNotes(): Flow<List<Note>>
 
     @Upsert

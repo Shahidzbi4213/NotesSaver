@@ -6,9 +6,11 @@ import com.example.noterssaver.domain.repository.SettingRepo
 import com.example.noterssaver.domain.usecase.settings.ClearAllUseCase
 import com.example.noterssaver.domain.usecase.settings.EmptySettingUseCase
 import com.example.noterssaver.domain.usecase.settings.GetAppLockStatusUseCase
+import com.example.noterssaver.domain.usecase.settings.GetCurrentSortingOrderUserCase
 import com.example.noterssaver.domain.usecase.settings.GetCurrentThemeStatusUseCase
 import com.example.noterssaver.domain.usecase.settings.SettingUseCases
 import com.example.noterssaver.domain.usecase.settings.UpdateAppLockUseCase
+import com.example.noterssaver.domain.usecase.settings.UpdateNotesSortingUserCase
 import com.example.noterssaver.domain.usecase.settings.UpdateThemeUseCase
 import com.example.noterssaver.presentation.setting.SettingViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -27,9 +29,11 @@ val settingModule = module {
         SettingUseCases(
             updateAppLockerUseCase = UpdateAppLockUseCase(get()),
             updateThemeUseCase = UpdateThemeUseCase(get()),
+            updateNotesSortingUserCase = UpdateNotesSortingUserCase(get()),
             deleteAllNotesUseCase = ClearAllUseCase(get()),
             getCurrentThemeStatusUseCase = GetCurrentThemeStatusUseCase(get()),
             getAppLockStatusUseCase = GetAppLockStatusUseCase(get()),
+            getCurrentSortingOrderUserCase = GetCurrentSortingOrderUserCase(get()),
             emptySettingUseCase = EmptySettingUseCase(get())
         )
     }

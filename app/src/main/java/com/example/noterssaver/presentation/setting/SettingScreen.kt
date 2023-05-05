@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,9 +16,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.noterssaver.R
 import com.example.noterssaver.presentation.destinations.BiometricScreenDestination
 import com.example.noterssaver.presentation.setting.component.DeleteDialog
+import com.example.noterssaver.presentation.setting.component.PickerDialog
 import com.example.noterssaver.presentation.setting.component.SingleSettingItem
-import com.example.noterssaver.presentation.setting.component.ThemePickerDialog
 import com.example.noterssaver.presentation.setting.model.SettingOption
+import com.example.noterssaver.presentation.setting.util.OrderType
 import com.example.noterssaver.presentation.setting.util.ThemeStyle
 import com.example.noterssaver.presentation.util.Extensions.snackBar
 import com.example.noterssaver.presentation.view.component.LocalSnackBarState
@@ -47,6 +47,10 @@ fun SettingScreen(
         mutableStateOf(false)
     }
 
+    var showSortingDialog by remember {
+        mutableStateOf(false)
+    }
+
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         contentPadding = PaddingValues(5.dp),
@@ -66,14 +70,14 @@ fun SettingScreen(
 
             ) {
                 when (index) {
-                    0 -> {
-                        showThemePickerDialog = true
-                    }
+                    0 -> showThemePickerDialog = true
 
                     1 -> navigator.navigate(BiometricScreenDestination)
-                    3 -> {
-                        showDeleteDialog = true
-                    }
+
+                    2 -> showSortingDialog = true
+
+                    4 -> showDeleteDialog = true
+
                 }
             }
         }
@@ -90,15 +94,30 @@ fun SettingScreen(
         },
         onCancel = { showDeleteDialog = false })
 
-    if (showThemePickerDialog) ThemePickerDialog(
+    if (showThemePickerDialog)
+        PickerDialog(
+            title = "Choose Theme",
+            currentState = settingViewModel.currentThemeState,
+            optionList = ThemeStyle.values().toList(),
+            onDismissRequest = { showThemePickerDialog = false },
+            onCancelRequest = { showThemePickerDialog = false },
+            onConfirmRequest = {
+                settingViewModel.updateTheme(it)
+                showThemePickerDialog = false
+            })
 
-        currentThemeState = settingViewModel.currentThemeState,
-        onDismissRequest = { showThemePickerDialog = false },
-        onCancelRequest = { showThemePickerDialog = false },
-        onConfirmRequest = {
-            settingViewModel.updateTheme(it ?: ThemeStyle.LIGHT)
-            showThemePickerDialog = false
-        })
+
+    if (showSortingDialog)
+        PickerDialog(
+            title = "Sort Notes",
+            optionList = OrderType.values().toList(),
+            currentState = settingViewModel.currentSortingOrder,
+            onConfirmRequest = {
+                settingViewModel.updateCurrentSortingOrder(it)
+                showSortingDialog = false
+            },
+            onDismissRequest = { showSortingDialog = false },
+            onCancelRequest = { showSortingDialog = false })
 }
 
 private fun updateSettingIconForTheme(

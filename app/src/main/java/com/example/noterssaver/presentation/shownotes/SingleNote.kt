@@ -12,11 +12,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -24,12 +21,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.noterssaver.R
 import com.example.noterssaver.data.model.Note
-import com.example.noterssaver.presentation.destinations.AddNoteDestination
-import com.example.noterssaver.presentation.util.Extensions.formattedDate
-import com.example.noterssaver.presentation.util.Extensions.formattedTime
+import com.example.noterssaver.presentation.util.Extensions.getDateTime
 import com.example.noterssaver.presentation.view.component.CustomIconButton
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,13 +64,13 @@ fun SingleNoteItem(
                     .padding(bottom = 5.dp)
             ) {
                 Text(
-                    text = note.timestamp.formattedTime(),
+                    text = note.timestamp.getDateTime().substringAfter(" "),
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.weight(1f)
                 )
 
                 Text(
-                    text = note.timestamp.formattedDate(),
+                    text = note.timestamp.getDateTime().substringBefore(" "),
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Right

@@ -19,9 +19,6 @@ class GetNotesViewModel(private val notesUseCases: NotesUseCases) : ViewModel() 
     var deleteState by mutableStateOf<NoteState?>(null)
         private set
 
-    private var _lastDeletedNote = MutableStateFlow<Note?>(null)
-    val lastDeleteNote: StateFlow<Note?> get() = _lastDeletedNote
-
     var copyClickState by mutableStateOf(false)
         private set
 
@@ -40,19 +37,25 @@ class GetNotesViewModel(private val notesUseCases: NotesUseCases) : ViewModel() 
         copyClickState = newState
     }
 
-    fun updateDeleteState() {
+    fun updateDeleteState(){
         deleteState = null
     }
+
 
     fun onDelete(note: Note) {
         viewModelScope.launch {
             deleteState = try {
                 notesUseCases.deleteNoteUseCase.invoke(note)
-                _lastDeletedNote.value = note
                 NoteState.Success("Note Deleted")
             } catch (e: Exception) {
                 NoteState.Error(e)
             }
+        }
+    }
+
+    fun saveOnUndo(lastDeletedNote: Note) {
+        viewModelScope.launch {
+            notesUseCases.addNoteUseCase.invoke(lastDeletedNote)
         }
     }
 }

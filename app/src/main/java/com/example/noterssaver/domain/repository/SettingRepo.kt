@@ -1,6 +1,7 @@
 package com.example.noterssaver.domain.repository
 
 import com.example.noterssaver.data.model.Setting
+import com.example.noterssaver.presentation.setting.util.OrderType
 import com.example.noterssaver.presentation.setting.util.ThemeStyle
 import kotlinx.coroutines.flow.Flow
 
@@ -12,15 +13,11 @@ interface SettingRepo {
 
     suspend fun updateAppLockStatus(value: Boolean)
 
-    suspend fun updatePassword(newPass: String)
-
-    suspend fun updateHint(newHint: String)
-
-    fun getCurrentPassword(): Flow<String>
-
-    fun getCurrentHint(): Flow<String>
+    suspend fun updateSortingOrder(orderType: OrderType)
 
     fun getCurrentTheme(): Flow<ThemeStyle>
 
     fun getAppLockStatus(): Flow<Boolean>
+
+    fun getCurrentSortingOrder(): Flow<OrderType>
 }

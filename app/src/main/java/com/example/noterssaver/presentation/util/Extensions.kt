@@ -7,6 +7,10 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 object Extensions {
@@ -25,9 +29,7 @@ object Extensions {
         }
     }
 
-    fun Long.formattedDate(): String =
-        SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(this)
-
-    fun Long.formattedTime(): String =
-        SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(this)
+    fun Long.getDateTime(): String =
+        DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a")
+            .format(LocalDateTime.ofInstant(Instant.ofEpochMilli(this), ZoneId.systemDefault()))
 }

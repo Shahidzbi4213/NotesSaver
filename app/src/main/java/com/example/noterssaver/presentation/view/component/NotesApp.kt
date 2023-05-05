@@ -26,8 +26,10 @@ import org.koin.core.qualifier.Qualifier
 
 @Composable
 fun NotesApp(mainViewModel: MainViewModel, activity: MainActivity) {
+
     val navController = rememberNavController()
     val snackBarState = remember { SnackbarHostState() }
+    val isScrollUp = mainViewModel.mainStates.isScrollUp
 
 
     CompositionLocalProvider(
@@ -38,7 +40,7 @@ fun NotesApp(mainViewModel: MainViewModel, activity: MainActivity) {
             snackbarHost = { SnackbarHost(hostState = snackBarState) },
             floatingActionButton = {
                 FloatingButton(
-                    navController = navController, mainViewModel.isScrollUp
+                    navController = navController, isScrollUp
                 ) {
                     mainViewModel.clickForSaveNote(it)
                 }
