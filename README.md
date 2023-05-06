@@ -12,3 +12,6 @@ Notes that are older than 3 months will be deleted automatically, helping to kee
 
 # Fingerprint authentication
 For added security, Notes Saver includes fingerprint authentication to lock the app and prevent unauthorized access.
+
+# Multiple Language Support
+
