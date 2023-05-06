@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unlock_description">जब सक्षम हो, नोट सेवर खोलने के लिए आपको फिंगरप्रिंट का उपयोग करना होगा।</string>
+    <string name="not_available">इस डिवाइस पर कोई जीवमान्यता से संबंधित सुविधाएं उपलब्ध नहीं हैं।</string>
+    <string name="currently_unavailable">जीवमान्यता से संबंधित सुविधाएं वर्तमान में अनुपलब्ध हैं।</string>
+    <string name="setup_fingerprint">इस सुविधा का उपयोग करने के लिए, आपको सबसे पहले अपने डिवाइस पर फिंगरप्रिंट सेटअप करना होगा।</string>
+    <string name="something_wrong">कुछ गलत हो गया है</string>
+    <string name="detail_of_note">नोट के विवरण</string>
+    <string name="write_to_save">यहां लिखें कि आप क्या सहेजना चाहते हैं।</string>
+    <string name="title_of_note">नोट का शीर्षक</string>
+    <string name="title">शीर्षक</string>
+    <string name="add_note">नोट जोड़ें</string>
+    <string name="unlock_with_fingerprint">फिंगरप्रिंट के साथ अनलॉक करें</string>
+    <string name="biometric_title">जीवमान्यता से सुरक्षित नोट</string>
+    <string name="biometric_subtitle">बायोमेट्रिक से अपने नोट को अनलॉक करें</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="biometric_description">बायोमेट्रिक प्रमाणीकरण के साथ नोट लेने का भविष्य! बस सुरक्षित और सुविधाजनक नोट लेना सीखें!</string>
+    <string name="write_here_what_u_want_to_save">यहाँ लिखें कि आप क्या सहेजना चाहते हैं।</string>
+    <string name="detail_about_note">नोट के बारे में विस्तार से जानकारी</string>
+    <string name="something_went_wrong">कुछ गलत हो गया</string>
+    <string name="confirmation">पुष्टिकरण</string>
+    <string name="can_not_undone">क्या आप निश्चित हैं कि आप आगे बढ़ना चाहते हैं? यह कार्रवाई वापस नहीं ले सकती।</string>
+    <string name="delete">हटाएँ</string>
+    <string name="ok">ठीक है</string>
+    <string name="setting">सेटिंग्स</string>
+    <string name="fingerprint_lock">फिंगरप्रिंट लॉक</string>
+    <string name="note_something_down">कुछ लिखें</string>
+    <string name="appearance">उपस्थिति</string>
+    <string name="fingerprint">फिंगरप्रिंट</string>
+    <string name="sort_notes">नोट सॉर्ट करें</string>
+    <string name="language">भाषा</string>
+    <string name="clear_notes">नोट साफ करें</string>
+    <string name="choose_theme">थीम चुनें</string>
+    <string name="select_language">भाषा चुनें</string>
+</resources>

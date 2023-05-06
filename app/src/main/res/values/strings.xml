@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Notes Saver</string>
+    <string name="app_name" translatable="false">Notes Saver</string>
     <string name="unlock_description"> when enabled, you\'ll need to use fingerprint to open Notes Saver.</string>
     <string name="not_available">No biometric features available on this device.</string>
     <string name="currently_unavailable">Biometric features are currently unavailable.</string>
@@ -21,8 +21,15 @@
     <string name="confirmation">Confirmation</string>
     <string name="can_not_undone">Are you sure you want to proceed? This action cannot be undone.</string>
     <string name="delete">Delete</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="setting">Setting</string>
     <string name="fingerprint_lock">Fingerprint Lock</string>
     <string name="note_something_down">Note something down</string>
+    <string name="appearance">Appearance</string>
+    <string name="fingerprint">Fingerprint</string>
+    <string name="sort_notes">Sort Notes</string>
+    <string name="language">Language</string>
+    <string name="clear_notes">Clear Notes</string>
+    <string name="choose_theme">Choose Theme</string>
+    <string name="select_language">Select Language</string>
 </resources>

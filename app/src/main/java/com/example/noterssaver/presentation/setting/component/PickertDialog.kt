@@ -40,23 +40,16 @@ import kotlinx.coroutines.flow.collectLatest
 fun <T : Enum<T>> PickerDialog(
     title: String,
     optionList: List<T>,
-    currentState: StateFlow<T>,
+    currentState: T,
     onConfirmRequest: (T) -> Unit,
     onDismissRequest: () -> Unit,
     onCancelRequest: () -> Unit,
 ) {
 
     var selectedValue by remember {
-        mutableStateOf<T?>(null)
+        mutableStateOf<T?>(currentState)
     }
 
-
-
-    LaunchedEffect(key1 = Unit) {
-        currentState.collectLatest {
-            selectedValue = it
-        }
-    }
 
 
     Dialog(

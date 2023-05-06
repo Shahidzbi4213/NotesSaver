@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unlock_description">جب یہ فعال ہو جائے گا، تو آپ کو نوٹز سیور کو کھولنے کے لئے اپنے انگوٹھے کا استعمال کرنا پڑے گا۔</string>
+    <string name="not_available">اس آلہ پر کوئی بائیو میٹرک خصوصیات دستیاب نہیں ہیں۔</string>
+    <string name="currently_unavailable">بائیومیٹرک خصوصیات فی الحال دستیاب نہیں ہیں۔</string>
+    <string name="setup_fingerprint">اس خصوصیت کو استعمال کرنے کے لئے، آپ کو پہلے اپنے آلہ میں اپنے انگوٹھے کو ترتیب دینے کی ضرورت ہے۔</string>
+    <string name="something_wrong">کچھ غلط ہو گیا</string>
+    <string name="detail_of_note">نوٹ کی تفصیلات</string>
+    <string name="write_to_save">یہاں لکھیں کہ آپ کیا محفوظ کرنا چاہتے ہیں۔</string>
+    <string name="title_of_note">نوٹ کا عنوان</string>
+    <string name="title">عنوان</string>
+    <string name="add_note">نوٹ شامل کریں</string>
+    <string name="unlock_with_fingerprint">انگوٹھے کے ساتھ کھولیں</string>
+    <string name="biometric_title">بائیومیٹرک کے ساتھ محفوظ نوٹ</string>
+    <string name="biometric_subtitle">بائیومیٹرک کے ذریعے آپ کے نوٹس کو کھولیں</string>
+    <string name="cancel">منسوخ کریں</string>
+    <string name="biometric_description">نوٹ لینے کا مستقبل اپنے ساتھ برآمد کریں! بائیومیٹرک تصدیق کے ساتھ آسان دسترسی کے لئے بولیں! صرف محفوظ اور آسان نوٹ لین۔</string>
+    <string name="write_here_what_u_want_to_save">یہاں لکھیں کہ آپ کیا محفوظ کرنا چاہتے ہیں۔</string>
+    <string name="detail_about_note">نوٹ کی تفصیل</string>
+    <string name="something_went_wrong">کچھ غلط ہو گیا</string>
+    <string name="confirmation">تصدیق</string>
+    <string name="can_not_undone">کیا آپ واقعی جاری رکھنا چاہتے ہیں؟ اس کارروائی کو واپس نہیں لایا جا سکتا۔</string>
+    <string name="delete">حذف کریں</string>
+    <string name="ok">ٹھیک ہے</string>
+    <string name="setting">ترتیبات</string>
+    <string name="fingerprint_lock">اپنے نوٹس کے لئے فنگر پرنٹ لاک</string>
+    <string name="note_something_down">کچھ لکھیں۔</string>
+    <string name="appearance">ظاہریت</string>
+    <string name="fingerprint">فنگر پرنٹ</string>
+    <string name="sort_notes">نوٹس کو ترتیب دیں</string>
+    <string name="language">زبان</string>
+    <string name="clear_notes">نوٹس صاف کریں</string>
+    <string name="choose_theme">تھیم منتخب کریں</string>
+    <string name="select_language">زبان منتخب کریں</string>
+</resources>
