@@ -2,8 +2,6 @@
 Notes Saver is a simple Android app that allows users to save notes and undo deleted notes. It also includes features such as light and dark mode switching, automatic deletion of notes that are 3 months old, and fingerprint authentication for locking the app.
 
 
-[png2pdf.pdf](https://github.com/Shahidzbi4213/NotesSaver/files/11516438/png2pdf.pdf)
-
 # Features
 Save and undo notes, with Notes Saver, users can save notes easily and quickly. Additionally, they can undo deleted notes with just a few clicks.
 
@@ -17,5 +15,3 @@ Notes that are older than 3 months will be deleted automatically, helping to kee
 For added security, Notes Saver includes fingerprint authentication to lock the app and prevent unauthorized access.
 
 # Multiple Language Support
-
-
